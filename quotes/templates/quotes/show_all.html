@@ -1,0 +1,19 @@
+<!-- quotes/templates/quotes/show_all.html -->
+{% extends 'quotes/base.html' %}
+        
+{% block content %}
+    <h1 style ="text-align: center;">All Quotes and Photos of Maya Angelou</h1> <br>
+
+    <h2 style="text-align: center;">All Quotes From Maya Angelou</h2> 
+    {% for quote in quotes %}
+        <p style="text-align: center;">{{ quote }}</p>
+    {% endfor %}
+
+    <h2 style="text-align: center;">All Photos of Maya Angelou</h2> 
+    {% for image in images %}
+        <div style="text-align: center;">
+            <img src="{{ image }}" alt="Maya Angelou" style="width:400px; margin: 10px;">
+        </div>
+    {% endfor %}
+{% endblock %}
+       

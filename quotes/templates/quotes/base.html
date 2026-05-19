@@ -1,0 +1,24 @@
+<!-- quotes/templates/quotes/base.html -->
+
+{% load static %}
+<html>
+    <head>
+        <title>Maya Angelou Quote of the Day!</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+    </head>
+    <body>
+        <nav>
+            <li><a href="{% url 'quote' %}">Quote of the Day!</a></li>
+            <li><a href="{% url 'show_all' %}">Show All</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+        </nav>
+      
+        <!-- put page specific content here -->
+        {% block content %}
+        {% endblock %}
+
+        <footer>
+            This webpage was created by Emily Vespasiano 
+        </footer>
+    </body>
+</html>

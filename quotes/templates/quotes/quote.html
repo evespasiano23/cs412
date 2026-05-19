@@ -1,0 +1,11 @@
+<!-- quotes/templates/quotes/quote.html -->
+{% extends 'quotes/base.html' %}
+        
+{% block content %}
+    <h1 style="text-align: center;">Maya Angelou Quote of the Day!</h1> 
+    <p style="text-align: center;">{{ quote }}</p>
+    <div style="text-align: center;"> 
+        <img src="{{ image }}" alt="Maya Angelou" style="width:700px;">
+    </div>
+{% endblock %}
+       
