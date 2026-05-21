@@ -1,0 +1,44 @@
+<!-- restaurant/templates/restaurant/order.html -->
+{% extends 'restaurant/base.html' %}  
+
+{% block content %}   
+<div>
+    <h1 style ="text-align: center;">Order Page</h1>
+
+    <form action="{% url 'confirmation' %}" method="POST">
+        {% csrf_token %}
+        
+        <h2>Menu Items</h2> <br>
+        <h3>All fish caught daily in Boston!</h3> <br>
+        {% for item in menu_items %}
+            <input type="checkbox" name="menu_items" value="{{item.meal}}"> 
+            {{item.meal}} - ${{item.price}} <br>
+
+            {% if item.meal == 'Lobster and Broccoli' %}
+                <div style="margin-left: 40px;">
+                    <input type="checkbox" name="menu_items" value="Add Butter">
+                    Add Butter - $5 <br>
+                </div>
+            {% endif %}
+        {% endfor %} <br>
+
+        <h2>Daily Special</h2> <br>
+        <input type="checkbox" name="daily_special" value="{{daily_special.meal}}">
+        {{daily_special.meal}} - ${{daily_special.price}} <br><br>
+
+        <h3>Special Instructions (allergies, etc)</h3>
+        <p style="color: gray;">Please inform us of any allergies or dietary restrictions.</p>
+        <textarea name="instructions"></textarea> <br><br>
+
+
+        <h3>Contact Information</h3> <br>
+        Name: <input type="text" name="name">
+        Phone Number: <input type="text" name="phone">
+        Email: <input type="text" name="email">
+        <input type="Submit">
+
+    </form>
+</div>
+
+
+{% endblock %}

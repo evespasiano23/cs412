@@ -1,0 +1,19 @@
+<!-- restaurant/templates/restaurant/base.html-->
+{% load static %}  
+
+<html>
+    <head>
+        <title>Restaurant Example</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+    </head>
+
+    <body>
+        <nav>
+            <li><a href="{% url 'main' %}">Main Page</a></li>
+            <li><a href="{% url 'order' %}">Order Online</a></li>
+        </nav>
+        {% block content %}
+        {% endblock content %}
+    </body>
+
+</html>
