@@ -26,4 +26,5 @@ urlpatterns = [
     path("quotes/", include("quotes.urls")), # Modify your main project urls.py to include the quotes/urls.py file.
     path("formdata/", include("formdata.urls")),
     path("restaurant/", include("restaurant.urls")), # Assignment 2
+    path("blog/", include("blog.urls")), 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
