@@ -1,7 +1,7 @@
 body {
     background-color: #fff;
     color: navy;
-    font-family: sans-serif;
+    font-family: Cambria;
 }
 
 h1,h2,h3,h4,h5{
@@ -99,7 +99,7 @@ nav li {
 nav button {
     background: none;
     color: slategray;
-    font-family: sans-serif;
+    font-family: Cambria;
     cursor: pointer; 
     border: 0;
     font-size: 1.2 em;
@@ -216,7 +216,7 @@ nav button {
     nav button {
         background: none;
         color: slategray;
-        font-family: sans-serif;
+        font-family: Cambria;
         cursor: pointer; 
         border: 0;
         font-size: 20px;

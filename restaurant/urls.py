@@ -9,6 +9,6 @@ from . import views
 urlpatterns = [
     path(r'main', views.main, name='main'), 
     path(r'order', views.order, name='order'), # update as you go 
-    path('confirmation/', views.confirmation, name='confirmation'),
+    path('confirmation', views.confirmation, name='confirmation'),
 
 ]
