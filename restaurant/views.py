@@ -19,6 +19,7 @@ menu_items = [
 ]
 extras = [
     {'meal': 'Add Butter', 'price': 5},
+    {'meal': 'Clam Chowder Soup', 'price': 8},
 ]
 daily_specials = [
     {'meal': 'Surf & Turf', 'price': 50},
