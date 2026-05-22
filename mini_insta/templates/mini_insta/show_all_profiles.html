@@ -1,0 +1,29 @@
+<!-- mini_insta/templates/mini_insta/show_all_profiles.html -->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Showing all profiles</h1>
+
+<!-- this displays the QuerySet of all profiles. -->
+<!-- {{profiles}} -->
+
+<main class="grid-container">
+    <!-- scriptlet code for a for loop -->
+    {% for profile in profiles %}
+    <article>
+        <div>
+            <h2>{{profile.username}} | {{profile.display_name}}</h2>
+            <p>
+                {{profile.bio_text}}
+            </p>
+        </div>
+
+        <!-- create a link to show this one profile only -->
+        <img src="{{profile.profile_image_url}}" alt="">
+
+    </article>
+    <hr>
+
+    {% endfor %}
+</main>
+{% endblock %}
