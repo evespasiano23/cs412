@@ -12,3 +12,10 @@ class ProfileListView(ListView):
     model = Profile
     template_name = "mini_insta/show_all_profiles.html"
     context_object_name = "profiles" # want similar to model name. will contain many instances of profile
+
+class ProfileDetailView(DetailView):
+    '''Display a single mini_insta profile.'''
+
+    model = Profile
+    template_name = "mini_insta/show_profile.html"
+    context_object_name = "profile" # singular 

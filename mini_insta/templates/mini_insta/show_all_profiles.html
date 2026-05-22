@@ -2,7 +2,7 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-<h1>Showing all profiles</h1>
+<h1>All Profiles (Knicks Edition)</h1>
 
 <!-- this displays the QuerySet of all profiles. -->
 <!-- {{profiles}} -->
@@ -10,19 +10,17 @@
 <main class="grid-container">
     <!-- scriptlet code for a for loop -->
     {% for profile in profiles %}
-    <article>
-        <div>
-            <h2>{{profile.username}} | {{profile.display_name}}</h2>
-            <p>
-                {{profile.bio_text}}
+    <article style="border-radius:12px; overflow:hidden; background:white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding:0;">
+        <a href="{% url 'show_profile' profile.pk %}">
+            <img src="{{profile.profile_image_url}}" alt="">
+        </a>
+        <div style="padding:16px;">
+            <h2 style="margin:0 0 4px 0;">{{profile.display_name}}</h2>
+            <p style="color:navy; margin:0 0 8px 0;">@{{profile.username}}</p>
+            <!-- <p>{{profile.bio_text}}</p> -->
             </p>
         </div>
-
-        <!-- create a link to show this one profile only -->
-        <img src="{{profile.profile_image_url}}" alt="">
-
     </article>
-    <hr>
 
     {% endfor %}
 </main>

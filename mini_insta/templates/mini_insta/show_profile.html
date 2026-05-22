@@ -1,0 +1,26 @@
+<!-- mini_insta/templates/mini_insta/show_profile.html -->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Showing Profile</h1>
+
+
+<main class="grid-container">
+    <article>
+        <div>
+            <h2>{{profile.username}} | {{profile.display_name}}</h2>
+            <p>
+                {{profile.bio_text}}
+            </p>
+            <p>
+                Joined: {{profile.join_date}}
+            </p>
+        </div>
+
+        <img src="{{profile.profile_image_url}}" alt="" style="width:200px; height:200px; border-radius:50%; object-fit:cover;">
+
+    </article>
+    <hr>
+
+</main>
+{% endblock %}
