@@ -7,26 +7,17 @@
 
 <main class="grid-container">
     <article>
-        <div>
-            <h2>{{profile.username}} | {{profile.display_name}}</h2>
-            <p>
-                {{profile.bio_text}}
-            </p>
-            <p>
-                Joined: {{profile.join_date}}
-            </p>
-            <p>
-                Followers: ...
-            </p>
-            <p>
-                Following: ...
-            </p>
-            <p>
-                Posts: 0
-            </p>
-        </div>
-
         <img src="{{profile.profile_image_url}}" alt="" style="width:200px; height:200px; border-radius:50%; object-fit:cover;">
+
+        <div>
+            <h2>{{profile.display_name}}</h2>
+            <p style="color:gray; margin-top:-10px;">@{{profile.username}}</p>
+            <p>{{profile.bio_text}}</p>
+            <p>Joined: {{profile.join_date}}</p>
+            <p>Followers: ...</p>
+            <p>Following: ...</p>
+            <p>Posts: 0</p>
+        </div>
 
     </article>
     <hr>
