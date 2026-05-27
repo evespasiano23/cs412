@@ -1,5 +1,7 @@
-# mini_insta/views.py
-# views for the mini_insta application
+# File: views.py
+# Author: Emily Vespasiano (evespa@bu.edu), 5/27/2026
+# Description: View classes for the mini_insta app. Displays
+# all mini_insta profiles and individual profile pages.
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from .models import Profile
@@ -11,11 +13,14 @@ class ProfileListView(ListView):
 
     model = Profile
     template_name = "mini_insta/show_all_profiles.html"
-    context_object_name = "profiles" # want similar to model name. will contain many instances of profile
+
+    # plural variable named to hold all profile objects to be displayed in the template
+    context_object_name = "profiles"
 
 class ProfileDetailView(DetailView):
     '''Display a single mini_insta profile.'''
 
     model = Profile
     template_name = "mini_insta/show_profile.html"
-    context_object_name = "profile" # singular 
+    # singular 'profile' so that you can access the object in the template
+    context_object_name = "profile" 

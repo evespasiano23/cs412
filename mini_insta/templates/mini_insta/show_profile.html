@@ -1,4 +1,10 @@
-<!-- mini_insta/templates/mini_insta/show_profile.html -->
+<!--
+    File: show_profile.html
+    Author: Emily Vespasiano (evespa@bu.edu), 5/27/2026
+    Description: Template to display one singular mini_insta profile in a grid layout.
+    Shows details of users profile picture, display name, username, bio, join date, 
+    follower/following count, and post count.
+-->
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
@@ -7,8 +13,10 @@
 
 <main class="grid-container">
     <article>
+        <!-- displays circular profile picture to match Instagram formatting. -->
         <img src="{{profile.profile_image_url}}" alt="" style="width:200px; height:200px; border-radius:50%; object-fit:cover;">
-
+        
+        <!-- displays profile data: display name, user, bio, join date, followers/following count, posts count. -->
         <div>
             <h2>{{profile.display_name}}</h2>
             <p style="color:gray; margin-top:-10px;">@{{profile.username}}</p>

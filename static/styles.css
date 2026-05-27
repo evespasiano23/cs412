@@ -32,10 +32,11 @@ header {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    background:lightgreen;
+    background:white;
     position: fixed;
     top: 0px;
     z-index: 999;
+    max-width: 960px;
     /* padding-right: 50px auto; */
 }
 
@@ -225,4 +226,5 @@ nav button {
     img {
         max-width: 95%;
     }
+
 }
