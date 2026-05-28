@@ -4,6 +4,7 @@
 # its attributes such as username and join date.
 
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Profile(models.Model):
@@ -29,3 +30,40 @@ class Profile(models.Model):
     def __str__(self):
         '''return a string representation of this Profile instance'''
         return f'{self.username}'
+
+    def get_all_posts(self):
+        '''Return all posts by a profile'''
+        posts = Post.objects.filter(profile=self).order_by('timestamp')
+        return posts
+
+class Post(models.Model):
+    '''Encapsulate the data of a post by a profile'''
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+    caption = models.TextField(blank=True)
+
+    
+    def __str__(self):
+        '''return a string representation of this Post instance'''
+        return f'Post by {self.profile} at {self.timestamp}'
+
+    def get_absolute_url(self):
+        '''Return a URL to display one instance of this Post. '''
+        return reverse('post', kwargs={'pk':self.pk})
+    
+    def get_all_photos(self):
+        '''Return all of the photos associated with a specific post.'''
+        photos = Photo.objects.filter(post=self).order_by('timestamp')
+        return photos
+
+class Photo(models.Model):
+    '''Encapsulate the data of a photo associated with a post'''
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    image_url = models.URLField(blank=True)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        '''return a string representation of this Photo instance'''
+        return f'Photo at {self.timestamp}'

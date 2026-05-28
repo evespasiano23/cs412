@@ -4,7 +4,7 @@
 # to their corresponding view classes in views.py.
 
 from django.urls import path
-from .views import ProfileListView, ProfileDetailView
+from .views import ProfileListView, ProfileDetailView, PostDetailView
 
 
 urlpatterns = [
@@ -13,5 +13,6 @@ urlpatterns = [
 
     # url to show user info for a singular profile page which is identified by the primary key
     path(r'profile/<int:pk>', ProfileDetailView.as_view(), name='show_profile'), 
+    path(r'post/<int:pk>', PostDetailView.as_view(), name='show_post'), 
 ]
 

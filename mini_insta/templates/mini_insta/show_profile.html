@@ -24,11 +24,28 @@
             <p>Joined: {{profile.join_date}}</p>
             <p>Followers: ...</p>
             <p>Following: ...</p>
-            <p>Posts: 0</p>
+            <p>Posts: {{profile.get_all_posts.count}}</p>
         </div>
 
     </article>
     <hr>
+
+    <!-- display all posts for a profile -->
+    {% for post in profile.get_all_posts %}
+        <article>
+            <p>{{post.caption}}</p>
+            <p>{{post.timestamp}}</p>
+
+                {% if post.get_all_photos.first %}
+                    <img src="{{post.get_all_photos.first.image_url}}" alt="post image" style="width:300px;">
+                {% else %} 
+                    <p>No image</p>
+                {% endif %}
+
+                <a href="{% url 'show_post' pk=post.pk %}">View Post</a>
+        </article>
+        <hr>
+    {% endfor %}
 
 </main>
 {% endblock %}

@@ -3,7 +3,7 @@
  
  
 from django import forms
-from .models import Article
+from .models import Article, Comment
  
 class CreateArticleForm(forms.ModelForm):
     '''A form to add an Article to the database.'''
@@ -11,4 +11,11 @@ class CreateArticleForm(forms.ModelForm):
     class Meta:
         '''Associate this form with a model from our database.'''
         model = Article
-        fields = ['author', 'title', 'text', 'image_url']
+        fields = ['author', 'title', 'text', 'image_file']
+class CreateCommentForm(forms.ModelForm):
+    '''A form to add a Comment about an Article.'''
+ 
+    class Meta:
+        '''associate this form with a model from our database.'''
+        model = Comment
+        fields = ['author', 'text']  # which fields from model should we use

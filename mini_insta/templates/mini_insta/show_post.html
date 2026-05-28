@@ -1,0 +1,28 @@
+<!--
+    File: show_post.html
+    Author: Emily Vespasiano (evespa@bu.edu), 5/27/2026
+    Description: Template to display a single mini_insta post.
+-->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Post by {{post.profile}}</h1>
+
+<main class="grid-container">
+    <article>
+        <p>{{post.caption}}</p>
+        <p>{{post.timestamp}}</p>
+
+        {% for photo in post.get_all_photos %}
+            {% if photo.image_url %}
+                <img src="{{photo.image_url}}" alt="post image" style="width:300px;">
+            {% else %}
+                <p>No image</p>
+            {% endif %}
+        {% endfor %}
+
+        <a href="{% url 'show_profile' pk=post.profile.pk %}">{{post.profile.display_name}}'s Profile</a>
+    </article>
+</main>
+
+{% endblock %}
