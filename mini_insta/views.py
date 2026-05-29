@@ -1,5 +1,5 @@
 # File: views.py
-# Author: Emily Vespasiano (evespa@bu.edu), 5/27/2026
+# Author: Emily Vespasiano (evespa@bu.edu), 5/29/2026
 # Description: View classes for the mini_insta app. Displays
 # all mini_insta profiles and individual profile pages.
 from django.shortcuts import render
@@ -7,7 +7,6 @@ from django.views.generic import ListView, DetailView, CreateView
 from .models import Profile, Post, Photo
 from .forms import CreatePostForm
 from django.urls import reverse
-import random
 
 # Create your views here.
 class ProfileListView(ListView):
@@ -28,7 +27,7 @@ class ProfileDetailView(DetailView):
     context_object_name = "profile" 
 
 class PostDetailView(DetailView):
-    '''Display a single post'''
+    '''Display a single post.'''
     model = Post
     template_name = "mini_insta/show_post.html"
     context_object_name = "post"
@@ -71,7 +70,7 @@ class CreatePostView(CreateView):
         form.instance.profile = profile # set the FK
         post = form.save()
 
-         # create a photo with the image_url from the form
+        # create a photo with the image_url from the form
         # image_url = self.request.POST.get('image_url')
         # if image_url:
         #     Photo.objects.create(post=post, image_url=image_url)

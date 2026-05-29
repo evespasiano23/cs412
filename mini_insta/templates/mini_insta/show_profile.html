@@ -1,6 +1,6 @@
 <!--
     File: show_profile.html
-    Author: Emily Vespasiano (evespa@bu.edu), 5/27/2026
+    Author: Emily Vespasiano (evespa@bu.edu), 5/29/2026
     Description: Template to display one singular mini_insta profile in a grid layout.
     Shows details of users profile picture, display name, username, bio, join date, 
     follower/following count, and post count.
@@ -28,24 +28,26 @@
         </div>
 
     </article>
-    <hr>
-
-    <!-- display all posts for a profile -->
-    {% for post in profile.get_all_posts %}
-        <article>
-            <p>{{post.caption}}</p>
-            <p>{{post.timestamp}}</p>
-
-                {% if post.get_all_photos.first %}
-                    <img src="{{post.get_all_photos.first.get_image_url}}" alt="post image" style="width:300px;">
-                {% else %} 
-                    <p>No image</p>
-                {% endif %}
-
-                <a href="{% url 'show_post' pk=post.pk %}">View Post</a>
-        </article>
-        <hr>
-    {% endfor %}
-
 </main>
+<hr>
+
+    <!-- display all posts for a profile in 3 column grid similar to the Instagram profile page style -->
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; padding:10px">
+        <!-- loops through all posts on the profile -->
+        {% for post in profile.get_all_posts %}
+            <div>
+                    <!-- shows the first photo of the post if it exists, if not shows no image text-->
+                    {% if post.get_all_photos.first %}
+                        <img src="{{post.get_all_photos.first.get_image_url}}" alt="post image" style="width:100%; height:300px; object-fit:cover;">
+                    {% else %} 
+                        <p>No image</p>
+                    {% endif %}
+                    <p>{{post.caption}}</p>
+                    <p>{{post.timestamp}}</p>
+                    <!-- link to show the posts detail page -->
+                    <a href="{% url 'show_post' pk=post.pk %}">View Post</a>
+            </div>
+        {% endfor %}
+    </div>
+
 {% endblock %}

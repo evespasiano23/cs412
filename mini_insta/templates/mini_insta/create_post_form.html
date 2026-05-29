@@ -1,6 +1,6 @@
 <!--
     File: create_post_form.html
-    Author: Emily Vespasiano (evespa@bu.edu), 5/27/2026
+    Author: Emily Vespasiano (evespa@bu.edu), 5/29/2026
     Description: Displays the HTML form to create a new Post object.
 -->
 {% extends 'mini_insta/base.html' %}
@@ -14,13 +14,15 @@
     {% csrf_token %}
     <table>
         {{form.as_table}}
+        <!-- allows user to select and upload one or multiple photos to a profile -->
         <tr>
-            <th><label for="image_url">Select Photos:</label></th>
+            <th><label for="files">Select Photos:</label></th>
             <td><input type="file" name="files" id="files" multiple></td>
         </tr>
     </table>
 
     <input type="submit" name="submit" value="Submit">
+    <!-- cancel button to allow user to return to the profile page without creating a new post -->
     <a href="{% url 'show_profile' pk=profile.pk %}">Cancel</a>
 </form>
 

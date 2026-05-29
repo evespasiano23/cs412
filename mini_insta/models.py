@@ -1,7 +1,7 @@
 # File: models.py
-# Author: Emily Vespasiano (evespa@bu.edu), 5/27/2026
-# Description: Data models for the mini_insta app. Defines the Profile model and 
-# its attributes such as username and join date.
+# Author: Emily Vespasiano (evespa@bu.edu), 5/29/2026
+# Description: Data models for the mini_insta app. Defines the Profile, Post, and Photo models and 
+# their attributes such as username and join date.
 
 from django.db import models
 from django.urls import reverse
