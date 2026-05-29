@@ -37,7 +37,7 @@
             <p>{{post.timestamp}}</p>
 
                 {% if post.get_all_photos.first %}
-                    <img src="{{post.get_all_photos.first.image_url}}" alt="post image" style="width:300px;">
+                    <img src="{{post.get_all_photos.first.get_image_url}}" alt="post image" style="width:300px;">
                 {% else %} 
                     <p>No image</p>
                 {% endif %}

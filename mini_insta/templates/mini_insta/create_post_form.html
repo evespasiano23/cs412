@@ -1,0 +1,27 @@
+<!--
+    File: create_post_form.html
+    Author: Emily Vespasiano (evespa@bu.edu), 5/27/2026
+    Description: Displays the HTML form to create a new Post object.
+-->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Create a new Post for @{{profile.username}}</h1>
+
+<!-- display the HTML form -->
+<form action="{% url 'create_post' pk=profile.pk %}" method="POST" 
+    enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{form.as_table}}
+        <tr>
+            <th><label for="image_url">Select Photos:</label></th>
+            <td><input type="file" name="files" id="files" multiple></td>
+        </tr>
+    </table>
+
+    <input type="submit" name="submit" value="Submit">
+    <a href="{% url 'show_profile' pk=profile.pk %}">Cancel</a>
+</form>
+
+{% endblock %}
