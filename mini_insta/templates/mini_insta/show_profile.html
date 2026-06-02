@@ -22,9 +22,9 @@
             <p style="color:gray; margin-top:0;">@{{profile.username}}</p>
 
             <div style="display:flex; gap:20px;">
-                <p><strong>{{profile.get_all_posts.count}}</strong> posts:</p>
-                <p><a href="{% url 'show_followers' profile.pk %}"><strong>{{profile.get_num_followers}}</strong> followers:</a></p>
-                <p><a href="{% url 'show_following' profile.pk %}"><strong>{{profile.get_num_following}}</strong> following:</a></p>
+                <p><strong>{{profile.get_all_posts.count}}</strong> posts</p>
+                <p><a href="{% url 'show_followers' profile.pk %}"><strong>{{profile.get_num_followers}}</strong> followers</a></p>
+                <p><a href="{% url 'show_following' profile.pk %}"><strong>{{profile.get_num_following}}</strong> following</a></p>
             </div>
 
             <p>{{profile.bio_text}}</p>
@@ -36,7 +36,6 @@
                 <a href="{% url 'create_post' profile.pk %}"><button>New Post</button></a>
             </div>
         </div>
-
 
     </article>
 </main>

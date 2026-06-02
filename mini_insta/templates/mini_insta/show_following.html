@@ -1,7 +1,7 @@
 <!--
     File: show_following.html
     Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
-    Description: Template to display all profiles that a specific profile is following
+    Description: Template to display all profiles that a specific profile is following.
 -->
 {% extends 'mini_insta/base.html' %}
 
@@ -12,7 +12,5 @@
         {% for following in profile.get_following %}
             <p><a href="{% url 'show_profile' following.pk %}">{{following.display_name}}</a></p>
         {% endfor %}
-
-
 
 {% endblock %}

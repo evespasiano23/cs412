@@ -17,13 +17,13 @@
 
         <!-- displays the all photos of the insta post -->
         {% for photo in post.get_all_photos %}
+            <!-- displays the Photo if it has an image url -->
             {% if photo.get_image_url %}
                 <img src="{{photo.get_image_url}}" alt="post image" style="width:100%; max-height:500px; object-fit:cover;">
             {% endif %}
         {% endfor %}
 
         <!-- display like count above post caption -->
-
         <!--if post has no likes, displays no likes yet -->
         {% if post.get_likes.count == 0 %}
             <p>No likes yet</p>

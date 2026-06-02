@@ -22,10 +22,10 @@
         {% block content %}
         {% endblock %}
 
-        <!-- bottom navigation bar-->
+        <!-- bottom navigation bar -->
         {% if profile %}
         <nav style="position:fixed; bottom:0; width:100%; background:white; border-top:1px solid #ddd; display:flex; justify-content:space-around; padding:10px;">
-            <a href="{% url 'show_feed' pk=profile.pk %}">🏠</a>
+            <a href="{% url 'show_feed' pk=profile.pk %}">🏀</a>
             <a href="{% url 'search' pk=profile.pk %}">🔍</a>
             <a href="{% url 'show_profile' pk=profile.pk %}">👤</a>
         </nav>

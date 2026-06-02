@@ -10,6 +10,7 @@
 <main class="grid-container">
     <article>
 
+        <!-- header row: displays the profile picture, username, timestamp, and update/delete links -->
         <div style="display:flex; align-items:center; justify-content:space-between;">
             <div style="display:flex; align-items:center; gap:10px;">
                 <img src="{{post.profile.profile_image_url}}" alt="" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
@@ -37,7 +38,6 @@
         {% endfor %}
 
         <!-- display like count above post caption -->
-
         <!--if post has no likes, displays no likes yet -->
         {% if post.get_likes.count == 0 %}
             <p>No likes yet</p>
