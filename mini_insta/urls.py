@@ -4,7 +4,7 @@
 # to their corresponding view classes in views.py.
 
 from django.urls import path
-from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView
+from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView, DeletePostView, UpdatePostView
 
 
 urlpatterns = [
@@ -22,5 +22,11 @@ urlpatterns = [
 
     # url to update a specific profile
     path('profile/<int:pk>/update', UpdateProfileView.as_view(), name='update_profile'), 
+
+    # url to delete a post on a specific profile 
+    path('post/<int:pk>/delete', DeletePostView.as_view(), name='delete_post'), 
+
+    # url to update a specific post on a profile
+    path('post/<int:pk>/update', UpdatePostView.as_view(), name='update_post'), 
 ]
 

@@ -3,9 +3,9 @@
 # Description: View classes for the mini_insta app. Displays
 # all mini_insta profiles and individual profile pages.
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Profile, Post, Photo
-from .forms import CreatePostForm, UpdateProfileForm
+from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
 from django.urls import reverse
 
 # Create your views here.
@@ -89,3 +89,48 @@ class UpdateProfileView(UpdateView):
     model = Profile
     form_class = UpdateProfileForm
     template_name = "mini_insta/update_profile_form.html"
+
+class DeletePostView(DeleteView):
+    '''View class to delete a post on a profile.'''
+
+    model = Post
+    template_name = "mini_insta/delete_post_form.html"
+
+    def get_success_url(self):
+        '''Return the URL to redirect to after a successful delete.'''
+ 
+        # find the PK for this Comment:
+        pk = self.kwargs['pk']
+        # find the Comment object:
+        post = Post.objects.get(pk=pk)
+        
+        # find the PK of the Profile to which this post is associated:
+        profile = post.profile
+        
+        # return the URL to redirect to:
+        return reverse('show_profile', kwargs={'pk':profile.pk})
+
+    def get_context_data(self, **kwargs):
+        '''Return the dictionary of context variables for use in the template.'''
+ 
+        # calling the superclass method
+        context = super().get_context_data(**kwargs)
+ 
+ 
+        # find/add the article to the context data
+        # retrieve the PK from the URL pattern
+        pk = self.kwargs['pk']
+        post = Post.objects.get(pk=pk)
+ 
+ 
+        # add this post and profile into the context dictionary:
+        context['post'] = post
+        context['profile'] = post.profile
+        return context
+
+class UpdatePostView(UpdateView):
+    '''View class to handle update of an post based on its PK.'''
+
+    model = Post
+    form_class = UpdatePostForm
+    template_name = "mini_insta/update_post_form.html"

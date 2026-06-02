@@ -22,6 +22,12 @@
                 <p>No image</p>
             {% endif %}
         {% endfor %}
+
+        <!-- link to delete this post -->
+        <a href="{% url 'delete_post' post.pk %}">Delete Post</a>
+
+        <!-- link to update this post -->
+        <a href="{% url 'update_post' post.pk %}">Update Post</a>
         
         <!-- link back to the profile page of the post creator -->
         <a href="{% url 'show_profile' pk=post.profile.pk %}">{{post.profile.display_name}}'s Profile</a>
