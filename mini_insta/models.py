@@ -40,6 +40,33 @@ class Profile(models.Model):
         '''Return a URL to display one instance of this model. '''
         return reverse('show_profile', kwargs={'pk':self.pk})
 
+    def get_followers(self):
+        '''Return a list of Profiles who follow this profile.'''
+        follows = Follow.objects.filter(profile=self)
+        followers = []
+
+        for follow in follows:
+            followers.append(follow.follower_profile)
+        return followers
+
+    def get_num_followers(self):
+        '''Returns the count of followers.'''
+        return len(self.get_followers())
+
+    def get_following(self):
+        '''Returns a list of those Profiles followed by this Profile.'''
+        follows = Follow.objects.filter(follower_profile=self)
+        following = []
+
+        for follow in follows:
+            following.append(follow.profile)
+        return following
+
+    def get_num_following(self):
+        '''Returns the count of how many Profiles a given Profile is following'''
+        return len(self.get_following())
+
+
 class Post(models.Model):
     '''Encapsulate the data of a post by a profile'''
 
@@ -80,3 +107,14 @@ class Photo(models.Model):
         if self.image_url:
             return self.image_url
         return self.image_file.url
+
+class Follow(models.Model):
+    '''Encapsulate the data of a relationship between two Profiles.'''
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile")
+    follower_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="follower_profile")
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        '''return a string representation of this Follow instance'''
+        return f'{self.follower_profile} follows {self.profile}'
