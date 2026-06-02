@@ -4,7 +4,7 @@
 # to their corresponding view classes in views.py.
 
 from django.urls import path
-from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView
+from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView
 
 
 urlpatterns = [
@@ -19,5 +19,8 @@ urlpatterns = [
 
     # url to create a new post for a specific user profile
     path(r'profile/<int:pk>/create_post', CreatePostView.as_view(), name='create_post'), 
+
+    # url to update a specific profile
+    path('profile/<int:pk>/update', UpdateProfileView.as_view(), name='update_profile'), 
 ]
 

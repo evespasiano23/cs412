@@ -35,6 +35,10 @@ class Profile(models.Model):
         '''Return all posts by a profile'''
         posts = Post.objects.filter(profile=self).order_by('timestamp')
         return posts
+        
+    def get_absolute_url(self):
+        '''Return a URL to display one instance of this model. '''
+        return reverse('show_profile', kwargs={'pk':self.pk})
 
 class Post(models.Model):
     '''Encapsulate the data of a post by a profile'''

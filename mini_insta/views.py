@@ -3,9 +3,9 @@
 # Description: View classes for the mini_insta app. Displays
 # all mini_insta profiles and individual profile pages.
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Profile, Post, Photo
-from .forms import CreatePostForm
+from .forms import CreatePostForm, UpdateProfileForm
 from django.urls import reverse
 
 # Create your views here.
@@ -82,3 +82,10 @@ class CreatePostView(CreateView):
 
         # delegate the work to the superclass method form_valid:
         return super().form_valid(form)
+
+class UpdateProfileView(UpdateView):
+    '''View class to handle update of an profile based on its PK.'''
+
+    model = Profile
+    form_class = UpdateProfileForm
+    template_name = "mini_insta/update_profile_form.html"
