@@ -1,0 +1,16 @@
+{% if article.image_file %}
+    <img src="{{article.image_file.url}}%" alt="">
+{% else %}
+    <p> No image</p>
+{% endif %}
+
+<form method="=POST">
+    {% csrf_token %}  
+    <table>
+        {{form.as_table}}
+    </table>
+    <input type="submit" name="submit" value="Submit">
+</form>
+
+path('article/<int:pk>/create_article', CreateArticleView.as_view(), name='create_article')
+    path('article/<int:pk>', ArticleView.as_view(), name='article')

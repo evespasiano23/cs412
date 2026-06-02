@@ -10,6 +10,19 @@
 
 <main class="grid-container">
     <article>
+        <!-- display like count above post caption -->
+
+        <!--if post has no likes, displays no likes yet -->
+        {% if post.get_likes.count == 0 %}
+            <p>No likes yet</p>
+        <!-- case for if a post has one lik e-->
+        {% elif post.get_likes.count == 1 %}
+            <p>Liked by <strong>@{{post.get_likes.first.profile}}</strong></p>
+        <!-- case for if a post has more than one like -->
+        {% else %}
+            <p>Liked by <strong>@{{post.get_likes.first.profile}}</strong> and <strong>{{post.get_likes.count}} others</strong></p>
+        {% endif %}
+
         <p>{{post.caption}}</p>
         <p>{{post.timestamp}}</p>
 
@@ -33,5 +46,13 @@
         <a href="{% url 'show_profile' pk=post.profile.pk %}">{{post.profile.display_name}}'s Profile</a>
     </article>
 </main>
+
+<!--display all comments on a post -->
+<h3>Comments</h3>
+
+<!-- loops through each comment associated with a post -->
+{% for comment in post.get_all_comments %} 
+    <p><strong>@{{comment.profile}}</strong> {{comment.text}}</p>
+{% endfor %}
 
 {% endblock %}

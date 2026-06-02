@@ -4,7 +4,7 @@
 # all mini_insta profiles and individual profile pages.
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Profile, Post, Photo
+from .models import Profile, Post, Photo, Follow
 from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
 from django.urls import reverse
 
@@ -134,3 +134,24 @@ class UpdatePostView(UpdateView):
     model = Post
     form_class = UpdatePostForm
     template_name = "mini_insta/update_post_form.html"
+
+class ShowFollowersDetailView(DetailView):
+    '''Display a Profiles follower list.'''
+
+    model = Profile
+    template_name = "mini_insta/show_followers.html"
+    context_object_name = "profile"
+
+class ShowFollowingDetailView(DetailView):
+    '''Display which Profiles a specific Profiler is following.'''
+
+    model = Profile
+    template_name = "mini_insta/show_following.html"
+    context_object_name = "profile"
+
+class ShowFeedView(DetailView):
+    '''Display the post feed for a specific profile based on their following.'''
+
+    model = Profile
+    template_name = "mini_insta/show_feed.html"
+    context_object_name = "profile"

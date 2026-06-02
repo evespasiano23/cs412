@@ -1,0 +1,47 @@
+<!--
+    File: show_feed.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
+    Description: Template to display a post feed for a specific profile based on who they are following.
+-->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>{{profile.display_name}}'s Insta Feed</h1>
+<a href="{% url 'show_profile' profile.pk %}">Back to Profile</a>
+
+{% for post in profile.get_post_feed %}
+    <div>
+        <!-- displays the profile image and the name of the post author -->
+        <img src="{{post.profile.profile_image_url}}" alt="" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+        <strong>{{post.profile.display_name}}</strong>
+
+        <!-- displays the all photos of the insta post -->
+        {% for photo in post.get_all_photos %}
+            {% if photo.get_image_url %}
+                <img src="{{photo.get_image_url}}" alt="post image" style="width:100%; max-height:500px; object-fit:cover;">
+            {% endif %}
+        {% endfor %}
+
+        <!-- display like count above post caption -->
+
+        <!--if post has no likes, displays no likes yet -->
+        {% if post.get_likes.count == 0 %}
+            <p>No likes yet</p>
+        <!-- case for if a post has one lik e-->
+        {% elif post.get_likes.count == 1 %}
+            <p>Liked by <strong>@{{post.get_likes.first.profile}}</strong></p>
+        <!-- case for if a post has more than one like -->
+        {% else %}
+            <p>Liked by <strong>@{{post.get_likes.first.profile}}</strong> and <strong>{{post.get_likes.count}} others</strong></p>
+        {% endif %}
+        <p><strong>@{{post.profile}}</strong> {{post.caption}}</p>
+
+        <!-- displays post comments -->
+        {% for comment in post.get_all_comments %}
+            <p><strong>@{{comment.profile}}</strong> {{comment.text}}</p>
+        {% endfor %}
+        <hr>
+    </div>
+{% endfor %}
+
+{% endblock %}

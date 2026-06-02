@@ -1,6 +1,6 @@
 # File: models.py
-# Author: Emily Vespasiano (evespa@bu.edu), 5/29/2026
-# Description: Data models for the mini_insta app. Defines the Profile, Post, and Photo models and 
+# Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
+# Description: Data models for the mini_insta app. Defines the Profile, Post, Photo, Follow, and Comment models and 
 # their attributes such as username and join date.
 
 from django.db import models
@@ -28,7 +28,7 @@ class Profile(models.Model):
     join_date = models.DateField(blank=True)
 
     def __str__(self):
-        '''return a string representation of this Profile instance'''
+        '''Return a string representation of this Profile instance.'''
         return f'{self.username}'
 
     def get_all_posts(self):
@@ -63,12 +63,21 @@ class Profile(models.Model):
         return following
 
     def get_num_following(self):
-        '''Returns the count of how many Profiles a given Profile is following'''
+        '''Returns the count of how many Profiles a given Profile is following.'''
         return len(self.get_following())
+
+    def get_post_feed(self):
+        '''Returns a list of Posts, specifically from the Profiles that a specific Profile follows.'''
+        following = self.get_following()
+        posts = []
+        for profile in following:
+            profile_posts = Post.objects.filter(profile=profile)
+            posts += list(profile_posts)
+        return posts 
 
 
 class Post(models.Model):
-    '''Encapsulate the data of a post by a profile'''
+    '''Encapsulate the data of a post by a profile.'''
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)
@@ -76,7 +85,7 @@ class Post(models.Model):
 
     
     def __str__(self):
-        '''return a string representation of this Post instance'''
+        '''Return a string representation of this Post instance.'''
         return f'Post by {self.profile} at {self.timestamp}'
 
     def get_absolute_url(self):
@@ -88,6 +97,16 @@ class Post(models.Model):
         photos = Photo.objects.filter(post=self).order_by('timestamp')
         return photos
 
+    def get_all_comments(self):
+        '''Return all of the comments about this post.'''
+        comments = Comment.objects.filter(post=self)
+        return comments
+
+    def get_likes(self):
+        '''Return all of the likes about this post.'''
+        likes = Like.objects.filter(post=self)
+        return likes
+
 class Photo(models.Model):
     '''Encapsulate the data of a photo associated with a post'''
 
@@ -97,13 +116,13 @@ class Photo(models.Model):
     image_file = models.ImageField(blank=True) # an actual image
 
     def __str__(self):
-        '''return a string representation of this Photo instance'''
+        '''Return a string representation of this Photo instance.'''
         if self.image_url:
             return f'Photo url {self.image_url} at {self.timestamp}'
         return f'Photo file {self.image_file} at {self.timestamp}'
 
     def get_image_url(self):
-        '''returns the URL to the image'''
+        '''Returns the URL to the image.'''
         if self.image_url:
             return self.image_url
         return self.image_file.url
@@ -116,5 +135,28 @@ class Follow(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        '''return a string representation of this Follow instance'''
+        '''Return a string representation of this Follow instance.'''
         return f'{self.follower_profile} follows {self.profile}'
+    
+class Comment(models.Model):
+    '''Encapsulate the idea of a Comment about a Post.'''
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+    text = models.TextField(blank=True)
+
+    def __str__(self):
+        '''Return a string representation of this Comment.'''
+        return f'{self.profile} commented on {self.post} at {self.timestamp}'
+
+class Like(models.Model):
+    '''Encapsulate the idea of a Like about a Post.'''
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        '''Return a string representation of this Like.'''
+        return f'{self.profile} liked {self.post} at {self.timestamp}'

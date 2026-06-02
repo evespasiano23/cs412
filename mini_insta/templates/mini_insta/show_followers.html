@@ -1,0 +1,18 @@
+<!--
+    File: show_followers.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
+    Description: Template to display all followers of a specific profile 
+-->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>{{profile.display_name}}'s Followers</h1>
+
+        <!-- loops through each profile that follows a specific profile -->
+        {% for follower in profile.get_followers %}
+            <p>{{follower.display_name}}</p>
+        {% endfor %}
+
+
+
+{% endblock %}

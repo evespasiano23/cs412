@@ -4,7 +4,8 @@
 # to their corresponding view classes in views.py.
 
 from django.urls import path
-from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView, DeletePostView, UpdatePostView
+# from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView, DeletePostView, UpdatePostView, ShowFollowersDetailView, ShowFollowingDetailView
+from .views import *
 
 
 urlpatterns = [
@@ -28,5 +29,14 @@ urlpatterns = [
 
     # url to update a specific post on a profile
     path('post/<int:pk>/update', UpdatePostView.as_view(), name='update_post'), 
+
+    # url to show all followers of a specific profile
+    path('profile/<int:pk>/followers', ShowFollowersDetailView.as_view(), name='show_followers'),
+
+    # url to show all profiles that a specific profile is following
+    path('profile/<int:pk>/following', ShowFollowingDetailView.as_view(), name='show_following'),
+
+    # url to show post feed for a specific profile (based on their following)
+    path('profile/<int:pk>/feed', ShowFeedView.as_view(), name='show_feed'),
 ]
 
