@@ -1,7 +1,7 @@
 # File: models.py
 # Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
-# Description: Data models for the mini_insta app. Defines the Profile, Post, Photo, Follow, and Comment models and 
-# their attributes such as username and join date.
+# Description: Data models for the mini_insta app. Defines the Profile, Post, Photo, Follow, 
+# and Comment models and their attributes such as username and join date.
 
 from django.db import models
 from django.urls import reverse
@@ -131,7 +131,9 @@ class Follow(models.Model):
     '''Encapsulate the data of a relationship between two Profiles.'''
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile")
-    follower_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="follower_profile")
+    follower_profile = models.ForeignKey(Profile, 
+                                        on_delete=models.CASCADE, 
+                                        related_name="follower_profile")
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):

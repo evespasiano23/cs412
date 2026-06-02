@@ -1,0 +1,21 @@
+<!--
+    File: search.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
+    Description: Displays the HTML form to search for a specific Profile or Post.
+-->
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Search</h1>
+<p>@{{profile.username}}</p>
+
+<!-- display the HTML search form -->
+<form action="{% url 'search' profile.pk %}" method="GET">
+    <table>
+        <tr>
+            <td><label>Search for text, tags, or people:</label></td>
+            </td><textarea name="query"></textarea></td>
+        </tr>
+    </table>
+    <input type="submit" value="Search">   
+{% endblock %}

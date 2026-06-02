@@ -15,7 +15,7 @@
         <!--if post has no likes, displays no likes yet -->
         {% if post.get_likes.count == 0 %}
             <p>No likes yet</p>
-        <!-- case for if a post has one lik e-->
+        <!-- case for if a post has one like -->
         {% elif post.get_likes.count == 1 %}
             <p>Liked by <strong>@{{post.get_likes.first.profile}}</strong></p>
         <!-- case for if a post has more than one like -->

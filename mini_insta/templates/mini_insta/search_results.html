@@ -1,15 +1,31 @@
 <!--
-    File: show_feed.html
+    File: search_results.html
     Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
-    Description: Template to display a post feed for a specific profile based on who they are following.
+    Description: Displays the search results for a specific Profile or Post given a specific query.
 -->
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-<h1>{{profile.display_name}}'s Insta Feed</h1>
-<a href="{% url 'show_profile' profile.pk %}">Back to Profile</a>
+<!-- for Profiles that match the query -->
+<h1>Profiles matching {{query}}</h1>
 
-{% for post in profile.get_post_feed %}
+<!-- loops through all Profiles that match the user query -->
+{% for profile in profiles %}
+    <div style="display:inline-block; text-align:center;">
+        <a href="{% url 'show_profile' profile.pk %}">
+            <img src="{{profile.profile_image_url}}" alt="" style="width:100px; height:100px; border-radius:50%; object-fit:cover;">
+        </a>
+        <p style="color:black;">@{{profile.username}}</p>
+    </div>
+{% empty %}
+    <p>No profiles found.</p>
+{% endfor %}
+
+<!-- for Posts that match the query -->
+<h1>Posts matching {{query}}</h1>
+
+<!-- loops through all Posts that match the user query -->
+{% for post in posts %}
     <div>
         <!-- displays the profile image and the name of the post author -->
         <img src="{{post.profile.profile_image_url}}" alt="" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
@@ -42,6 +58,9 @@
         {% endfor %}
         <hr>
     </div>
-{% endfor %}
 
+{% empty %}
+    <p>No posts found.</p>
+{% endfor %}
+ 
 {% endblock %}

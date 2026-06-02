@@ -155,3 +155,53 @@ class ShowFeedView(DetailView):
     model = Profile
     template_name = "mini_insta/show_feed.html"
     context_object_name = "profile"
+
+class SearchView(ListView):
+    '''Handles the searching of Profiles and Posts.'''
+
+    model = Post
+    template_name = "mini_insta/search_results.html"
+    context_object_name = "posts"
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Dispatch the request, but if no query is provided then return the search form.'''
+        if 'query' not in request.GET:
+
+            # find the PK from the URL:
+            pk = self.kwargs['pk']
+            # find the Profile object
+            profile = Profile.objects.get(pk=pk)
+            # return the search form template
+            return render(request, 'mini_insta/search.html', {'profile': profile})
+        return super().dispatch(request, *args, **kwargs)
+
+
+    def get_queryset(self):
+        '''Returns posts that match the search query.'''
+        query = self.request.GET.get('query', '')
+        # reference: https://www.w3schools.com/django/ref_lookups_icontains.php
+        posts = Post.objects.filter(caption__icontains=query) 
+        return posts
+
+    def get_context_data(self, **kwargs):
+        '''Return the dictionary of context variables for use in the template.'''
+
+        # calling the superclass method
+        context = super().get_context_data(**kwargs)
+
+        # find/add the profile to the context data
+        # retrieve the PK from the URL pattern
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+
+        query = self.request.GET.get('query', '')
+
+        # add profile, query (if any), posts (that match the query), profiles (that match the query) into the context dictionary:
+        context['profile'] = profile
+        context['query'] = query
+        # reference: https://www.w3schools.com/django/ref_lookups_icontains.php
+        context['posts'] = Post.objects.filter(caption__icontains=query) 
+        context['profiles'] = (Profile.objects.filter(username__icontains=query) |  
+                               Profile.objects.filter(display_name__icontains=query) |  
+                               Profile.objects.filter(bio_text__icontains=query))
+        return context

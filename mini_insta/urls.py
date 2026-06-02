@@ -1,10 +1,9 @@
 # File: urls.py
-# Author: Emily Vespasiano (evespa@bu.edu), 5/29/2026
+# Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
 # Description: URL patterns for the 'mini_insta' app. Maps URL's
 # to their corresponding view classes in views.py.
 
 from django.urls import path
-# from .views import ProfileListView, ProfileDetailView, PostDetailView, CreatePostView, UpdateProfileView, DeletePostView, UpdatePostView, ShowFollowersDetailView, ShowFollowingDetailView
 from .views import *
 
 
@@ -38,5 +37,8 @@ urlpatterns = [
 
     # url to show post feed for a specific profile (based on their following)
     path('profile/<int:pk>/feed', ShowFeedView.as_view(), name='show_feed'),
+
+    # url to search for profiles and posts
+    path('profile/<int:pk>/search', SearchView.as_view(), name='search'),
 ]
 

@@ -23,6 +23,7 @@
                     {% if profile %} 
                     <li><a href="{% url 'create_post' pk=profile.pk %}">Create Post</a></li>
                     <li><a href="{% url 'show_feed' pk=profile.pk %}">Home</a></li>
+                    <li><a href="{% url 'search' pk=profile.pk %}">Search</a></li>
                     <li><a href="{% url 'show_profile' pk=profile.pk %}">Profile</a></li>
                     {% endif %}
                 </ul>
