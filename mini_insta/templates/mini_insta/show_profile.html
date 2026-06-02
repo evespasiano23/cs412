@@ -9,25 +9,33 @@
 
 {% block content %}
 <h1>Showing Profile</h1>
-
+<a href="{% url 'show_all_profiles' %}">← Back to All Profiles</a>
 
 <main class="grid-container">
-    <article>
+    <article style="display:flex; align-items:center; gap:40px; padding:20px;">
         <!-- displays circular profile picture to match Instagram formatting. -->
-        <img src="{{profile.profile_image_url}}" alt="" style="width:200px; height:200px; border-radius:50%; object-fit:cover;">
+        <img src="{{profile.profile_image_url}}" alt="" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
         
         <!-- displays profile data: display name, user, bio, join date, followers/following count, posts count. -->
         <div>
-            <h2>{{profile.display_name}}</h2>
-            <p style="color:gray; margin-top:-10px;">@{{profile.username}}</p>
+            <h2 style="margin-bottom:5px;">{{profile.display_name}}</h2>
+            <p style="color:gray; margin-top:0;">@{{profile.username}}</p>
+
+            <div style="display:flex; gap:20px;">
+                <p><strong>{{profile.get_all_posts.count}}</strong> posts:</p>
+                <p><a href="{% url 'show_followers' profile.pk %}"><strong>{{profile.get_num_followers}}</strong> followers:</a></p>
+                <p><a href="{% url 'show_following' profile.pk %}"><strong>{{profile.get_num_following}}</strong> following:</a></p>
+            </div>
+
             <p>{{profile.bio_text}}</p>
-            <p>Joined: {{profile.join_date}}</p>
-            <p><a href="{% url 'show_followers' profile.pk %}">Followers: {{profile.get_num_followers}}</a></p>
-            <p><a href="{% url 'show_following' profile.pk %}">Following: {{profile.get_num_following}}</a></p>
-            <p>Posts: {{profile.get_all_posts.count}}</p>
+            <p style="color:gray">Joined: {{profile.join_date}}</p>
+            
+            <div style="display:flex; gap:10px;">
+                <!-- link to update profile's profile (this includes: display name, profile picture, and bio)-->
+                <a href="{% url 'update_profile' profile.pk %}"><button>Update Profile</button></a>
+                <a href="{% url 'create_post' profile.pk %}"><button>New Post</button></a>
+            </div>
         </div>
-        <!-- link to update profile's profile (this includes: display name, profile picture, and bio)-->
-        <a href="{% url 'update_profile' profile.pk %}">Update Profile</a>
 
 
     </article>
@@ -38,18 +46,20 @@
     <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; padding:10px">
         <!-- loops through all posts on the profile -->
         {% for post in profile.get_all_posts %}
-            <div>
+            <div style="position:relative;">
                     <!-- shows the first photo of the post if it exists, if not shows no image text-->
                     {% if post.get_all_photos.first %}
-                        <img src="{{post.get_all_photos.first.get_image_url}}" alt="post image" style="width:100%; height:300px; object-fit:cover;">
+                        <a href="{% url 'show_post' pk=post.pk %}">
+                            <img src="{{post.get_all_photos.first.get_image_url}}" alt="post image" style="width:100%; height:300px; object-fit:cover;">
+                        </a>
                     {% else %} 
-                        <p>No image</p>
+                        <a href="{% url 'show_post' pk=post.pk %}">
+                            <p>No image</p>
+                        </a>
                     {% endif %}
-                    <p>{{post.caption}}</p>
-                    <p>{{post.timestamp}}</p>
-                    <!-- link to show the posts detail page -->
-                    <a href="{% url 'show_post' pk=post.pk %}">View Post</a>
             </div>
+        {% empty %}
+            <p style="color:black; font-weight:bold;">No Posts</p>
         {% endfor %}
     </div>
 

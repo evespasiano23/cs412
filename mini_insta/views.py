@@ -1,5 +1,5 @@
 # File: views.py
-# Author: Emily Vespasiano (evespa@bu.edu), 5/29/2026
+# Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
 # Description: View classes for the mini_insta app. Displays
 # all mini_insta profiles and individual profile pages.
 from django.shortcuts import render
@@ -68,20 +68,23 @@ class CreatePostView(CreateView):
         profile = Profile.objects.get(pk=pk)
         # attach this profile to the post
         form.instance.profile = profile # set the FK
-        post = form.save()
-
-        # create a photo with the image_url from the form
-        # image_url = self.request.POST.get('image_url')
-        # if image_url:
-        #     Photo.objects.create(post=post, image_url=image_url)
+        response = super().form_valid(form) # saves post via superclass
 
         # handles file uploads for photos
         files = self.request.FILES.getlist('files')
         for file in files:
-            Photo.objects.create(post=post, image_file=file)
+            Photo.objects.create(post=self.object, image_file=file)
 
-        # delegate the work to the superclass method form_valid:
-        return super().form_valid(form)
+        return response
+
+    def get_success_url(self):
+        '''Return the URL to redirect to after creating a new Post.'''
+        # find the PK from the URL pattern
+        pk = self.kwargs['pk']
+        # find the profile
+        profile = Profile.objects.get(pk=pk)
+        # redirect to the profile page
+        return reverse('show_profile', kwargs={'pk': profile.pk})
 
 class UpdateProfileView(UpdateView):
     '''View class to handle update of an profile based on its PK.'''
@@ -143,7 +146,7 @@ class ShowFollowersDetailView(DetailView):
     context_object_name = "profile"
 
 class ShowFollowingDetailView(DetailView):
-    '''Display which Profiles a specific Profiler is following.'''
+    '''Display which Profiles a specific Profile is following.'''
 
     model = Profile
     template_name = "mini_insta/show_following.html"

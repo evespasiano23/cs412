@@ -6,10 +6,36 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-<h1>Post by {{post.profile}}</h1>
 
 <main class="grid-container">
     <article>
+
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <img src="{{post.profile.profile_image_url}}" alt="" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+                <a href="{% url 'show_profile' pk=post.profile.pk %}"><strong>@{{post.profile}}</strong></a>
+                <p style="color:gray; font-size:12px; margin:0;">{{post.timestamp}}</p>
+            </div>
+
+            <div>
+                <!-- link to update this post -->
+                <a href="{% url 'update_post' post.pk %}"><button>Update Post</button></a>
+
+                <!-- link to delete this post -->
+                <a href="{% url 'delete_post' post.pk %}"><button>Delete Post</button></a>
+            </div>
+        </div>
+
+        <!-- loops through each photo associated with a post and shows each photo -->
+        {% for photo in post.get_all_photos %}
+            <!-- show the photo if it has an image attached, otherwise show No image text -->
+            {% if photo.get_image_url %}
+                <img src="{{photo.get_image_url}}" alt="post image" style="width:100%; max-height: 500px; object-fit:cover;">
+            {% else %}
+                <p>No image</p>
+            {% endif %}
+        {% endfor %}
+
         <!-- display like count above post caption -->
 
         <!--if post has no likes, displays no likes yet -->
@@ -23,36 +49,17 @@
             <p>Liked by <strong>@{{post.get_likes.first.profile}}</strong> and <strong>{{post.get_likes.count}} others</strong></p>
         {% endif %}
 
-        <p>{{post.caption}}</p>
-        <p>{{post.timestamp}}</p>
+        <!-- displays post caption -->
+        <p><strong>@{{post.profile}}</strong> {{post.caption}}</p>
 
-        <!-- loops through each photo associated with a post and shows each photo -->
-        {% for photo in post.get_all_photos %}
-            <!-- show the photo if it has an image attached, otherwise show No image text -->
-            {% if photo.get_image_url %}
-                <img src="{{photo.get_image_url}}" alt="post image" style="width:300px;">
-            {% else %}
-                <p>No image</p>
-            {% endif %}
+        <!-- loops through each comment associated with a post -->
+        {% for comment in post.get_all_comments %} 
+            <p style="font-size:0.8em;"><strong>@{{comment.profile}}</strong> {{comment.text}}</p>
         {% endfor %}
 
-        <!-- link to delete this post -->
-        <a href="{% url 'delete_post' post.pk %}">Delete Post</a>
-
-        <!-- link to update this post -->
-        <a href="{% url 'update_post' post.pk %}">Update Post</a>
-        
-        <!-- link back to the profile page of the post creator -->
-        <a href="{% url 'show_profile' pk=post.profile.pk %}">{{post.profile.display_name}}'s Profile</a>
+    
     </article>
 </main>
 
-<!--display all comments on a post -->
-<h3>Comments</h3>
-
-<!-- loops through each comment associated with a post -->
-{% for comment in post.get_all_comments %} 
-    <p><strong>@{{comment.profile}}</strong> {{comment.text}}</p>
-{% endfor %}
 
 {% endblock %}

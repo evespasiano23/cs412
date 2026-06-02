@@ -16,23 +16,20 @@
     <body>
         <header>
             <h1>Mini Instagram</h1>
-            <nav>
-                <ul>
-                    <li><a href="{% url 'show_all_profiles' %}">Show All</a></li>
-                    <!-- only show the create post if a profile exists -->
-                    {% if profile %} 
-                    <li><a href="{% url 'create_post' pk=profile.pk %}">Create Post</a></li>
-                    <li><a href="{% url 'show_feed' pk=profile.pk %}">Home</a></li>
-                    <li><a href="{% url 'search' pk=profile.pk %}">Search</a></li>
-                    <li><a href="{% url 'show_profile' pk=profile.pk %}">Profile</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
         </header>
 
         <!-- substitute in the specific content here -->
         {% block content %}
         {% endblock %}
+
+        <!-- bottom navigation bar-->
+        {% if profile %}
+        <nav style="position:fixed; bottom:0; width:100%; background:white; border-top:1px solid #ddd; display:flex; justify-content:space-around; padding:10px;">
+            <a href="{% url 'show_feed' pk=profile.pk %}">🏠</a>
+            <a href="{% url 'search' pk=profile.pk %}">🔍</a>
+            <a href="{% url 'show_profile' pk=profile.pk %}">👤</a>
+        </nav>
+        {% endif %}
     </body>
 
 </html>

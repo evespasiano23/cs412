@@ -1,7 +1,7 @@
 # File: models.py
 # Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
 # Description: Data models for the mini_insta app. Defines the Profile, Post, Photo, Follow, 
-# and Comment models and their attributes such as username and join date.
+# Comment, and Like models and their attributes such as username and join date.
 
 from django.db import models
 from django.urls import reverse
@@ -33,7 +33,7 @@ class Profile(models.Model):
 
     def get_all_posts(self):
         '''Return all posts by a profile'''
-        posts = Post.objects.filter(profile=self).order_by('timestamp')
+        posts = Post.objects.filter(profile=self).order_by('-timestamp')
         return posts
         
     def get_absolute_url(self):
@@ -71,7 +71,7 @@ class Profile(models.Model):
         following = self.get_following()
         posts = []
         for profile in following:
-            profile_posts = Post.objects.filter(profile=profile)
+            profile_posts = Post.objects.filter(profile=profile).order_by('-timestamp')
             posts += list(profile_posts)
         return posts 
 

@@ -10,7 +10,7 @@
 
         <!-- loops through each profile that a specific profile is following -->
         {% for following in profile.get_following %}
-            <p>{{following.display_name}}</p>
+            <p><a href="{% url 'show_profile' following.pk %}">{{following.display_name}}</a></p>
         {% endfor %}
 
 

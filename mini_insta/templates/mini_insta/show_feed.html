@@ -7,7 +7,7 @@
 
 {% block content %}
 <h1>{{profile.display_name}}'s Insta Feed</h1>
-<a href="{% url 'show_profile' profile.pk %}">Back to Profile</a>
+<a href="{% url 'show_profile' profile.pk %}"><button>Back to Profile</button></a>
 
 {% for post in profile.get_post_feed %}
     <div>
@@ -38,10 +38,12 @@
 
         <!-- displays post comments -->
         {% for comment in post.get_all_comments %}
-            <p><strong>@{{comment.profile}}</strong> {{comment.text}}</p>
+            <p style="font-size:0.8em;"><strong>@{{comment.profile}}</strong> {{comment.text}}</p>
         {% endfor %}
         <hr>
     </div>
+{% empty %}
+    <p>Your feed is empty! Follow some profiles to see their posts.</p>
 {% endfor %}
 
 {% endblock %}

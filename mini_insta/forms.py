@@ -1,5 +1,5 @@
 # File: forms.py
-# Author: Emily Vespasiano (evespa@bu.edu), 5/29/2026
+# Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
 # Description: Forms for the mini_insta app.
  
 from django import forms
