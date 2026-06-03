@@ -16,6 +16,28 @@
     <body>
         <header>
             <h1>Mini Instagram</h1>
+            <nav>
+                <ul>
+                    <!-- URLs for logged in users only -->
+                    {% if request.user.is_authenticated %}
+                    <li>
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <!-- URLs for users who are not logged in -->
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <hr>
+                {% if request.user.is_authenticated %}
+                    Logged in as: {{request.user}}
+                {% else %}
+                    Not logged in.
+                {% endif %}
+            </nav>
         </header>
 
         <!-- substitute in the specific content here -->
@@ -25,8 +47,11 @@
         <!-- bottom navigation bar -->
         {% if profile %}
         <nav style="position:fixed; bottom:0; width:100%; background:white; border-top:1px solid #ddd; display:flex; justify-content:space-around; padding:10px;">
-            <a href="{% url 'show_feed' pk=profile.pk %}">🏀</a>
-            <a href="{% url 'search' pk=profile.pk %}">🔍</a>
+            <!-- restricts feed and search options to logged in users only-->
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'show_feed' %}">🏀</a>
+                <a href="{% url 'search' %}">🔍</a>
+            {% endif %}
             <a href="{% url 'show_profile' pk=profile.pk %}">👤</a>
         </nav>
         {% endif %}

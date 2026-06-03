@@ -2,13 +2,27 @@
 # Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
 # Description: View classes for the mini_insta app. Displays
 # all mini_insta profiles and individual profile pages.
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Profile, Post, Photo, Follow
 from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
 from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin ## for authentication
 
 # Create your views here.
+class ProfileLoginMixin(LoginRequiredMixin):
+    '''Mixin class that handles login requirements for views classes.'''
+
+    def get_login_url(self):
+        '''return the URL for this app's login page'''
+        return reverse('login')
+
+    def get_current_profile(self):
+        '''return the current profile user logged in'''
+        return Profile.objects.get(user=self.request.user)
+
+
+
 class ProfileListView(ListView):
     '''Define a view class to show all mini_insta Profiles.'''
 
@@ -26,13 +40,31 @@ class ProfileDetailView(DetailView):
     # singular 'profile' so that you can access the object in the template
     context_object_name = "profile" 
 
+    def get_object(self):
+        '''returns a Profile object either by primary key
+        or by the logged in user'''
+        if 'pk' in self.kwargs:
+            return Profile.objects.get(pk=self.kwargs['pk'])
+        return Profile.objects.get(user=self.request.user)
+
 class PostDetailView(DetailView):
     '''Display a single post.'''
     model = Post
     template_name = "mini_insta/show_post.html"
     context_object_name = "post"
 
-class CreatePostView(CreateView):
+    def get_context_data(self, **kwargs):
+        '''Return the dictionary of context variables for use in the template.'''
+        context = super().get_context_data(**kwargs)
+        # add the profile to context for the bottom nav
+        if self.request.user.is_authenticated:
+            context['profile'] = Profile.objects.get(user=self.request.user)
+        else:
+            # use the post's profile for the nav (if logged out)
+            context['profile'] = self.get_object().profile
+        return context
+
+class CreatePostView(ProfileLoginMixin, CreateView):
     '''A view to handle creation of a new post on an Profile.'''
  
     form_class = CreatePostForm
@@ -45,10 +77,8 @@ class CreatePostView(CreateView):
         context = super().get_context_data()
  
  
-        # find/add the profile to the context data
-        # retrieve the PK from the URL pattern
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        # get the profile of the logged in user
+        profile = self.get_current_profile()
  
  
         # add this profile into the context dictionary:
@@ -63,9 +93,8 @@ class CreatePostView(CreateView):
         '''
         
         print(form.cleaned_data)
-        # retrieve the PK from the URL pattern
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        # get the profile of the logged in user
+        profile = self.get_current_profile()
         # attach this profile to the post
         form.instance.profile = profile # set the FK
         response = super().form_valid(form) # saves post via superclass
@@ -79,21 +108,20 @@ class CreatePostView(CreateView):
 
     def get_success_url(self):
         '''Return the URL to redirect to after creating a new Post.'''
-        # find the PK from the URL pattern
-        pk = self.kwargs['pk']
-        # find the profile
-        profile = Profile.objects.get(pk=pk)
+        # get the profile of the logged in user
+        profile = self.get_current_profile()
+
         # redirect to the profile page
         return reverse('show_profile', kwargs={'pk': profile.pk})
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(ProfileLoginMixin, UpdateView):
     '''View class to handle update of an profile based on its PK.'''
 
     model = Profile
     form_class = UpdateProfileForm
     template_name = "mini_insta/update_profile_form.html"
 
-class DeletePostView(DeleteView):
+class DeletePostView(ProfileLoginMixin, DeleteView):
     '''View class to delete a post on a profile.'''
 
     model = Post
@@ -131,12 +159,29 @@ class DeletePostView(DeleteView):
         context['profile'] = post.profile
         return context
 
-class UpdatePostView(UpdateView):
+class UpdatePostView(ProfileLoginMixin, UpdateView):
     '''View class to handle update of an post based on its PK.'''
 
     model = Post
     form_class = UpdatePostForm
     template_name = "mini_insta/update_post_form.html"
+
+    def get_context_data(self, **kwargs):
+        '''Return the dictionary of context variables for use in the template.'''
+ 
+        # calling the superclass method
+        context = super().get_context_data(**kwargs)
+ 
+ 
+        # find/add the article to the context data
+        # retrieve the PK from the URL pattern
+        pk = self.kwargs['pk']
+        post = Post.objects.get(pk=pk)
+ 
+ 
+        # add this postinto the context dictionary:
+        context['post'] = post
+        return context
 
 class ShowFollowersDetailView(DetailView):
     '''Display a Profiles follower list.'''
@@ -152,14 +197,18 @@ class ShowFollowingDetailView(DetailView):
     template_name = "mini_insta/show_following.html"
     context_object_name = "profile"
 
-class ShowFeedView(DetailView):
+class ShowFeedView(ProfileLoginMixin, DetailView):
     '''Display the post feed for a specific profile based on their following.'''
 
     model = Profile
     template_name = "mini_insta/show_feed.html"
     context_object_name = "profile"
 
-class SearchView(ListView):
+    def get_object(self):
+        '''returns the Profile of the logged in user.'''
+        return self.get_current_profile()
+
+class SearchView(ProfileLoginMixin, ListView):
     '''Handles the searching of Profiles and Posts.'''
 
     model = Post
@@ -169,11 +218,11 @@ class SearchView(ListView):
     def dispatch(self, request, *args, **kwargs):
         '''Dispatch the request, but if no query is provided then return the search form.'''
         if 'query' not in request.GET:
-
-            # find the PK from the URL:
-            pk = self.kwargs['pk']
-            # find the Profile object
-            profile = Profile.objects.get(pk=pk)
+            # check to see if the user is logged in
+            if not request.user.is_authenticated:
+                return redirect(self.get_login_url())
+            # find the profile of the logged in user
+            profile = self.get_current_profile()
             # return the search form template
             return render(request, 'mini_insta/search.html', {'profile': profile})
         return super().dispatch(request, *args, **kwargs)
@@ -191,13 +240,11 @@ class SearchView(ListView):
 
         # calling the superclass method
         context = super().get_context_data(**kwargs)
-
-        # find/add the profile to the context data
-        # retrieve the PK from the URL pattern
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
-
         query = self.request.GET.get('query', '')
+
+        # get the profile of the logged in user
+        profile = self.get_current_profile()
+
 
         # add profile, query (if any), posts (that match the query), profiles (that match the query) into the context dictionary:
         context['profile'] = profile

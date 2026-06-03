@@ -32,8 +32,11 @@
             
             <div style="display:flex; gap:10px;">
                 <!-- link to update profile's profile (this includes: display name, profile picture, and bio)-->
-                <a href="{% url 'update_profile' profile.pk %}"><button>Update Profile</button></a>
-                <a href="{% url 'create_post' profile.pk %}"><button>New Post</button></a>
+                  <!-- only allowed to update/delete profile to the profile's owner -->
+                {% if request.user == profile.user %}
+                    <a href="{% url 'update_profile' %}"><button>Update Profile</button></a>
+                    <a href="{% url 'create_post' %}"><button>New Post</button></a>
+                {% endif %}
             </div>
         </div>
 

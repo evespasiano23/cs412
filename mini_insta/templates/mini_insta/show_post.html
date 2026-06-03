@@ -19,11 +19,14 @@
             </div>
 
             <div>
+                <!-- only allowed to update/delete options to the post's owner -->
+                {% if request.user == post.profile.user %}
                 <!-- link to update this post -->
                 <a href="{% url 'update_post' post.pk %}"><button>Update Post</button></a>
 
                 <!-- link to delete this post -->
                 <a href="{% url 'delete_post' post.pk %}"><button>Delete Post</button></a>
+                {% endif %}
             </div>
         </div>
 
