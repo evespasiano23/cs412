@@ -56,5 +56,17 @@ urlpatterns = [
 
     # url to create a new profile
     path('create_profile', CreateProfileView.as_view(), name='create_profile'),
+
+    # url to follow a profile
+    path('profile/<int:pk>/follow', FollowProfileView.as_view(), name='follow_profile'),
+
+    # url to unfollow a profile
+    path('profile/<int:pk>/delete_follow', UnfollowProfileView.as_view(), name='unfollow_profile'),
+
+    # url to like a post
+    path('post/<int:pk>/like', LikePostView.as_view(), name='like_post'),
+
+    # url to unlike a post
+    path('post/<int:pk>/delete_like', UnlikePostView.as_view(), name='unlike_post'),
 ]
 

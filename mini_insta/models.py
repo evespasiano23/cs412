@@ -113,6 +113,19 @@ class Post(models.Model):
         likes = Like.objects.filter(post=self)
         return likes
 
+    def get_likes_profiles(self):
+        '''Return a list of the Profiles that have liked a specific post.'''
+        likes = self.get_likes()
+        profiles = []
+        for like in likes:
+            profiles.append(like.profile)
+        return profiles
+
+    def get_likes_count(self):
+        '''Returns the number of likes minus 1 for display purposes.'''
+        return self.get_likes().count() - 1
+
+
 class Photo(models.Model):
     '''Encapsulate the data of a photo associated with a post'''
 

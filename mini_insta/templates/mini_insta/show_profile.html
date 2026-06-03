@@ -36,6 +36,13 @@
                 {% if request.user == profile.user %}
                     <a href="{% url 'update_profile' %}"><button>Update Profile</button></a>
                     <a href="{% url 'create_post' %}"><button>New Post</button></a>
+                <!-- show the follow/unfollow button to other logged in users -->
+                {% elif request.user.is_authenticated %}
+                    {% if request.user.profile_set.first in profile.get_followers %}
+                        <a href="{% url 'unfollow_profile' profile.pk %}"><button>Unfollow</button></a>
+                    {% else %}
+                    <a href="{% url 'follow_profile' profile.pk %}"><button>Follow</button></a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

@@ -49,9 +49,17 @@
             <p>Liked by <strong>@{{post.get_likes.first.profile}}</strong></p>
         <!-- case for if a post has more than one like -->
         {% else %}
-            <p>Liked by <strong>@{{post.get_likes.first.profile}}</strong> and <strong>{{post.get_likes.count}} others</strong></p>
+            <p>Liked by <strong>@{{post.get_likes.first.profile}}</strong> and <strong>{{post.get_likes_count}} others</strong></p>
         {% endif %}
 
+        <!-- displays like/unlike buttons to logged in user's viewing a post that isn't theirs -->
+        {% if request.user.is_authenticated and request.user != post.profile.user %}
+            {% if request.user.profile_set.first in post.get_likes_profiles %}
+                <a href="{% url 'unlike_post' post.pk %}"><button>Unlike 💙</button></a>
+            {% else %}
+            <a href="{% url 'like_post' post.pk %}"><button>Like 🤍</button></a>
+            {% endif %}
+        {% endif %}
         <!-- displays post caption -->
         <p><strong>@{{post.profile}}</strong> {{post.caption}}</p>
 

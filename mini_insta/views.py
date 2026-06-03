@@ -3,8 +3,8 @@
 # Description: View classes for the mini_insta app. Displays
 # all mini_insta profiles and individual profile pages.
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Profile, Post, Photo, Follow
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from .models import Profile, Post, Photo, Follow, Like
 from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm, CreateProfileForm
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin ## for authentication
@@ -309,3 +309,75 @@ class CreateProfileView(CreateView):
         '''Return the URL to redirect to after creating a new Profile.'''
     
         return reverse('show_profile', kwargs={'pk': self.object.pk})
+
+class FollowProfileView(ProfileLoginMixin, TemplateView):
+    '''View to handle following a person's Profile.'''
+
+    template_name = "mini_insta/show_profile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Dispatch the request to follow a profile.'''
+        follower_profile = self.get_current_profile()
+        # find which profile to follow
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+
+        # create their follow
+        Follow.objects.create(profile=profile, follower_profile=follower_profile)
+
+        # redirect to the profile page
+        return redirect(reverse('show_profile', kwargs={'pk': profile.pk}))
+
+class UnfollowProfileView(ProfileLoginMixin, TemplateView):
+    '''View to handle unfollowing a person's Profile.'''
+
+    template_name = "mini_insta/show_profile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Dispatch the request to unfollow a profile.'''
+        follower_profile = self.get_current_profile()
+        # find which profile to unfollow
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+
+        # delete their follow
+        Follow.objects.filter(profile=profile, follower_profile=follower_profile).delete()
+
+        # redirect to the profile page
+        return redirect(reverse('show_profile', kwargs={'pk': profile.pk}))
+
+class LikePostView(ProfileLoginMixin, TemplateView):
+    '''View to handle liking a Post.'''
+    
+    template_name = "mini_insta/show_profile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Dispatch the request to like a post.'''
+        profile = self.get_current_profile()
+        # find which post to like
+        pk = self.kwargs['pk']
+        post = Post.objects.get(pk=pk)
+
+        # add the like to the post
+        Like.objects.create(post=post, profile=profile)
+
+        # redirect to the post page
+        return redirect(reverse('show_post', kwargs={'pk': post.pk}))
+
+class UnlikePostView(ProfileLoginMixin, TemplateView): 
+    '''View to handle unliking a Post.'''
+
+    template_name = "mini_insta/show_profile.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Dispatch the request to unlike a post.'''
+        profile = self.get_current_profile()
+        # find which post to unlike
+        pk = self.kwargs['pk']
+        post = Post.objects.get(pk=pk)
+
+        # remove the like from the post
+        Like.objects.filter(post=post, profile=profile).delete()
+
+        # redirect to the post page
+        return redirect(reverse('show_post', kwargs={'pk': post.pk}))
