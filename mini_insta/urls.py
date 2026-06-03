@@ -53,5 +53,8 @@ urlpatterns = [
 
     # url to show user the logout confirmation page
     path('logout_confirmation/', TemplateView.as_view(template_name='mini_insta/logged_out.html'), name='logout_confirmation'),
+
+    # url to create a new profile
+    path('create_profile', CreateProfileView.as_view(), name='create_profile'),
 ]
 

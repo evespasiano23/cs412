@@ -29,6 +29,7 @@
                     {% else %}
                     <!-- URLs for users who are not logged in -->
                     <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'create_profile' %}">Register</a></li>
                     {% endif %}
                 </ul>
                 <hr>
@@ -45,16 +46,21 @@
         {% endblock %}
 
         <!-- bottom navigation bar -->
-        {% if profile %}
         <nav style="position:fixed; bottom:0; width:100%; background:white; border-top:1px solid #ddd; display:flex; justify-content:space-around; padding:10px;">
             <!-- restricts feed and search options to logged in users only-->
             {% if request.user.is_authenticated %}
+                <a href="{% url 'show_all_profiles' %}">🏠</a>
                 <a href="{% url 'show_feed' %}">🏀</a>
                 <a href="{% url 'search' %}">🔍</a>
+                <a href="{% url 'own_profile' %}">👤</a>
+            <!-- navigation bar for non logged in user's-->
+            {% else %}
+            <nav style="position:fixed; bottom:0; width:100%; background:white; border-top:1px solid #ddd; display:flex; justify-content:space-around; padding:10px;">
+                <a href="{% url 'show_all_profiles' %}">🏠</a>
+            </nav>
             {% endif %}
-            <a href="{% url 'show_profile' pk=profile.pk %}">👤</a>
+        
         </nav>
-        {% endif %}
     </body>
 
 </html>

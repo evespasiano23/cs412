@@ -75,8 +75,10 @@ class Profile(models.Model):
         following = self.get_following()
         posts = []
         for profile in following:
-            profile_posts = Post.objects.filter(profile=profile).order_by('-timestamp')
+            profile_posts = Post.objects.filter(profile=profile).order_by('timestamp')
             posts += list(profile_posts)
+        # sort all posts by newest timestamp first
+        posts.sort(key=lambda post: post.timestamp, reverse=True)
         return posts 
 
 

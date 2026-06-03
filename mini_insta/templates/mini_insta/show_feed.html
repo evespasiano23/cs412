@@ -7,7 +7,6 @@
 
 {% block content %}
 <h1>{{profile.display_name}}'s Insta Feed</h1>
-<a href="{% url 'show_profile' profile.pk %}"><button>Back to Profile</button></a>
 
 {% for post in profile.get_post_feed %}
     <div>

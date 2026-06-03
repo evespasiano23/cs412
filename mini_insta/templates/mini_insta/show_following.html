@@ -6,6 +6,7 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+<a href="{% url 'show_profile' profile.pk %}">⬅️</a>
 <h1>{{profile.display_name}} is following</h1>
 
         <!-- loops through each profile that a specific profile is following -->

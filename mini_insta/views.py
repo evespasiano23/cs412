@@ -5,9 +5,12 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Profile, Post, Photo, Follow
-from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
+from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm, CreateProfileForm
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin ## for authentication
+from django.contrib.auth.forms import UserCreationForm ## for new User
+from django.contrib.auth import login
+from datetime import date 
 
 # Create your views here.
 class ProfileLoginMixin(LoginRequiredMixin):
@@ -45,7 +48,9 @@ class ProfileDetailView(DetailView):
         or by the logged in user'''
         if 'pk' in self.kwargs:
             return Profile.objects.get(pk=self.kwargs['pk'])
-        return Profile.objects.get(user=self.request.user)
+        if self.request.user.is_authenticated:
+            return Profile.objects.get(user=self.request.user)
+        return None
 
 class PostDetailView(DetailView):
     '''Display a single post.'''
@@ -120,6 +125,10 @@ class UpdateProfileView(ProfileLoginMixin, UpdateView):
     model = Profile
     form_class = UpdateProfileForm
     template_name = "mini_insta/update_profile_form.html"
+
+    def get_object(self):
+        '''returns the Profile of the logged in user.'''
+        return self.get_current_profile()
 
 class DeletePostView(ProfileLoginMixin, DeleteView):
     '''View class to delete a post on a profile.'''
@@ -255,3 +264,48 @@ class SearchView(ProfileLoginMixin, ListView):
                                Profile.objects.filter(display_name__icontains=query) |  
                                Profile.objects.filter(bio_text__icontains=query))
         return context
+
+class CreateProfileView(CreateView):
+    '''A view to handle the creation of a new Profile.'''
+
+    form_class = CreateProfileForm
+    template_name = "mini_insta/create_profile_form.html"
+
+    def get_context_data(self, **kwargs):
+        '''Return the dictionary of context variables for use in the template.'''
+        context = super().get_context_data(**kwargs)
+
+        # add the UserCreationForm to the context dictionary
+        if self.request.method == 'POST':
+            context['user_form'] = UserCreationForm(self.request.POST)
+        else:
+            context['user_form'] = UserCreationForm()
+        return context
+    
+    def form_valid(self, form):
+        '''This method handles the form submission and saves the 
+        new object to the Django database.
+        We need to add the foreign key (of the Profile) to the Post
+        object before saving it to the database.
+        '''
+
+        # reconstruct the UserCreationForm instance
+        user_form = UserCreationForm(self.request.POST)
+
+        if user_form.is_valid():
+            # save the user
+            user = user_form.save()
+            # log the user in
+            login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+            # set the join date to current day
+            form.instance.join_date = date.today()
+            # attach this user to the profile
+            form.instance.user = user
+            return super().form_valid(form)  # saves post via superclass
+        else:
+            return self.form_invalid(form)
+
+    def get_success_url(self):
+        '''Return the URL to redirect to after creating a new Profile.'''
+    
+        return reverse('show_profile', kwargs={'pk': self.object.pk})
