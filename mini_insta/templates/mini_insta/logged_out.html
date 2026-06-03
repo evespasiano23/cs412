@@ -1,0 +1,19 @@
+<!--
+    File: logged_out.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/2/2026
+    Description: Displays the logout confirmation page for mini_insta.
+-->
+
+{% load static %}
+<html>
+    <head>
+        <title>Mini Instagram</title>
+        <link rel="stylesheet" href="{% static 'styles-blog.css' %}">
+    </head>
+    <body>
+        <h1>Mini Instagram</h1>
+        <h2>You have been logged out of Mini Instagram.</h2>
+        <a href="{% url 'login' %}">Login again</a>
+</body>
+
+</html>

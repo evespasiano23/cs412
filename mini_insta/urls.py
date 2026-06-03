@@ -8,6 +8,7 @@ from .views import *
 
 # generic view for authentication/authorization
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 urlpatterns = [
     # url to show the list of all profiles on mini_insta
@@ -45,9 +46,12 @@ urlpatterns = [
 
     ## authorization-related URLs:
     path('login/', auth_views.LoginView.as_view(template_name='mini_insta/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='show_all_profiles'), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='logout_confirmation'), name='logout'),
 
     # url to show the logged-in user their own profile page
     path('profile/', ProfileDetailView.as_view(), name='own_profile'),
+
+    # url to show user the logout confirmation page
+    path('logout_confirmation/', TemplateView.as_view(template_name='mini_insta/logged_out.html'), name='logout_confirmation'),
 ]
 
