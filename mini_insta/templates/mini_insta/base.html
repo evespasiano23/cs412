@@ -33,6 +33,7 @@
                     {% endif %}
                 </ul>
                 <hr>
+                <!-- display to notify user if they are logged in or not at the top of the site -->
                 {% if request.user.is_authenticated %}
                     Logged in as: {{request.user}}
                 {% else %}

@@ -14,10 +14,10 @@ class Profile(models.Model):
     # define the data attributes of the Profile object
 
     # profile's username 
-    username = models.TextField(blank=True)
+    username = models.CharField(max_length = 30, blank=True)
 
     # profile user's full name shown as a heading on their profile page
-    display_name = models.TextField(blank=True)
+    display_name = models.CharField(max_length = 40, blank=True)
 
     # profile user's profile picture URL
     profile_image_url = models.TextField(blank=True)
