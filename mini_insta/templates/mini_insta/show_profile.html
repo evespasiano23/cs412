@@ -6,10 +6,11 @@
     follower/following count, and post count.
 -->
 {% extends 'mini_insta/base.html' %}
+{% load static %}
 
 {% block content %}
 <h1>Showing Profile</h1>
-<a href="{% url 'show_all_profiles' %}">← Back to All Profiles</a>
+<a href="{% url 'show_all_profiles' %}" style="text-decoration:none; color:black; font-weight:bold;">← Back to All Profiles</a>
 
 <main class="grid-container">
     <article style="display:flex; align-items:center; gap:40px; padding:20px;">
@@ -23,8 +24,8 @@
 
             <div style="display:flex; gap:20px;">
                 <p><strong>{{profile.get_all_posts.count}}</strong> posts</p>
-                <p><a href="{% url 'show_followers' profile.pk %}"><strong>{{profile.get_num_followers}}</strong> followers</a></p>
-                <p><a href="{% url 'show_following' profile.pk %}"><strong>{{profile.get_num_following}}</strong> following</a></p>
+                <p><a href="{% url 'show_followers' profile.pk %}" style="text-decoration:none; color:inherit;"><strong>{{profile.get_num_followers}}</strong> followers</a></p>
+                <p><a href="{% url 'show_following' profile.pk %}" style="text-decoration:none; color:inherit;"><strong>{{profile.get_num_following}}</strong> following</a></p>
             </div>
 
             <p>{{profile.bio_text}}</p>
@@ -63,7 +64,7 @@
                         </a>
                     {% else %} 
                         <a href="{% url 'show_post' pk=post.pk %}">
-                            <p>No image</p>
+                            <img src="{% static 'default_post.png' %}" alt="no image" style="width:100%; height:300px; object-fit:cover;">
                         </a>
                     {% endif %}
             </div>

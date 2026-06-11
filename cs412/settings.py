@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "blog",
     "mini_insta", # assignment 3
     "marathon_analytics", # bonus assignment 
+    "rest_framework", ## Django REST framework
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,8 @@ CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
 if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
     STATIC_URL = '/evespa/static/'
     MEDIA_URL = '/evespa/media/'
+
+REST_FRAMEWORK = {
+  'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+  'PAGE_SIZE': 10
+}

@@ -4,6 +4,7 @@
     Description: Template to display a single mini_insta post.
 -->
 {% extends 'mini_insta/base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -36,8 +37,10 @@
             {% if photo.get_image_url %}
                 <img src="{{photo.get_image_url}}" alt="post image" style="width:100%; max-height: 500px; object-fit:cover;">
             {% else %}
-                <p>No image</p>
+                <img src="{% static 'default_post.png' %}" alt="no image" style="width:100%; max-height:500px; object-fit:cover;">
             {% endif %}
+        {% empty %}
+            <img src="{% static 'default_post.png' %}" alt="no image" style="width:100%; max-height:500px; object-fit:cover;">
         {% endfor %}
 
         <!-- display like count above post caption -->

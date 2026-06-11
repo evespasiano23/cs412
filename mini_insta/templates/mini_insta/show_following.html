@@ -6,12 +6,20 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-<a href="{% url 'show_profile' profile.pk %}">⬅️</a>
+<a href="{% url 'show_profile' profile.pk %}" style="text-align:center; text-decoration:none; color:black;">⬅️<br><small>Back to Profile</small></a>
 <h1>{{profile.display_name}} is following</h1>
 
         <!-- loops through each profile that a specific profile is following -->
         {% for following in profile.get_following %}
-            <p><a href="{% url 'show_profile' following.pk %}">{{following.display_name}}</a></p>
+            <p>
+                <a href="{% url 'show_profile' following.pk %}" 
+                style="text-decoration:none; color:#262626; font-weight:600;">
+                    {% if following.profile_image_url %}
+                        <img src="{{following.profile_image_url}}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:8px;">
+                    {% endif %}
+                    {{following.display_name}}
+                </a>
+            </p>
         {% endfor %}
 
 {% endblock %}
