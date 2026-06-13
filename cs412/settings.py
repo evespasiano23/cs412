@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "mini_insta", # assignment 3
     "marathon_analytics", # bonus assignment 
     "rest_framework", ## Django REST framework
+    "dadjokes", # assignment 8
 ]
 
 MIDDLEWARE = [

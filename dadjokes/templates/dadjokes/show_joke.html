@@ -1,0 +1,16 @@
+<!-- dadjokes/templates/dadjokes/show_joke.html
+-->
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+<h1>Dad Joke</h1>
+
+<main class="grid-container">
+    <article>
+        <div>
+            <h2>{{joke.text}}</h2>
+            <h3>by {{joke.contributor}}</h3>
+        </div>
+    </article>
+</main>
+{% endblock %}

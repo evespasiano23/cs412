@@ -1,0 +1,23 @@
+<!-- dadjokes/templates/dadjokes/show_all_pictures.html -->
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+<h1>Showing all Pictures</h1>
+
+<main class="grid-container">
+    <!-- loops through all pictures -->
+    {% for picture in pictures %}
+    <article>
+        <div>
+            <img src="{{picture.image_url}}" alt="picture" style="max-width:300px;">
+            <h3>by {{picture.contributor}}</h3>
+        </div>
+
+        <!-- create a link to show this one picture only -->
+        <a href="{% url 'show_picture' picture.pk %}">View Picture</a>
+    </article>
+    <hr>
+
+    {% endfor %}
+</main>
+{% endblock %}

@@ -1,0 +1,25 @@
+<!-- dadjokes/templates/dadjokes/random.html
+    display a random joke and picture on this webpage
+-->
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+<h1>Random Dad Joke</h1>
+
+<main class="grid-container">
+    <article>
+        <!-- displays the random picture -->
+        {% if picture %}
+            <img src="{{picture.image_url}}" alt="picture" style="max-width:500px;">
+        {% else %}
+            <h3>No image</h3>
+        {% endif %}
+
+        <div>
+            <!-- displays the random joke -->
+            <h2>{{joke.text}}</h2>
+            <h3>by {{joke.contributor}}</h3>
+        </div>
+    </article>
+</main>
+{% endblock %}

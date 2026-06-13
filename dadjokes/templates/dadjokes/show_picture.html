@@ -1,0 +1,16 @@
+<!-- dadjokes/templates/dadjokes/show_picture.html
+-->
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+<h1>Picture</h1>
+
+<main class="grid-container">
+    <article>
+        <div>
+            <img src="{{picture.image_url}}" alt="picture" style="max-width:500px;">
+            <h3>by {{picture.contributor}}</h3>
+        </div>
+    </article>
+</main>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!-- dadjokes/templates/dadjokes/base.html -->
+{% load static %}
+
+<html>
+    <head>
+        <title>Dad Jokes</title>
+        <link rel="stylesheet" href="{% static 'styles-blog.css' %}">
+    </head>
+
+    <body>
+        <head>
+            <h1>Dad Jokes</h1>
+            <nav>
+                <ul>
+                    <!-- navigation links for all users -->
+                    <li><a href="{% url 'random' %}">Random</a></li>
+                    <li><a href="{% url 'show_all_jokes' %}">Show All Jokes</a></li>
+                    <li><a href="{% url 'show_all_pictures' %}">Show All Pictures</a></li>
+                </ul>
+                <hr>
+            </nav>
+        </head>
+
+        <!-- substitute in the specific content here -->
+        {% block content %}
+        {% endblock %}
+    </body>
+
+</html>
