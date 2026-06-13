@@ -1,11 +1,13 @@
-# dadjokes/views.py
+# File: views.py
+# Author: Emily Vespasiano (evespa@bu.edu), 6/11/2026
+# Description: View classes for the dadjokes app. Displays
+# all dadjokes Jokes and Pictures and REST API views.
 from django.views.generic import ListView, DetailView
 from .models import Joke, Picture
 from rest_framework import generics
 from .serializers import *
 import random
 
-# Create your views here.
 class ShowAllJokesView(ListView):
     '''Define a view class to show all Jokes.'''
     model = Joke
@@ -57,8 +59,9 @@ class JokeListAPIView(generics.ListCreateAPIView):
   serializer_class = JokeSerializer
  
 class JokeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-  queryset = Joke.objects.all()
-  serializer_class = JokeSerializer
+    '''An API view to return a single joke using the primary key.'''
+    queryset = Joke.objects.all()
+    serializer_class = JokeSerializer
 
 class PictureListAPIView(generics.ListCreateAPIView):
   '''
@@ -69,8 +72,9 @@ class PictureListAPIView(generics.ListCreateAPIView):
   serializer_class = PictureSerializer
  
 class PictureDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-  queryset = Picture.objects.all()
-  serializer_class = PictureSerializer
+    '''An API view to return a single picture using the primary key.'''
+    queryset = Picture.objects.all()
+    serializer_class = PictureSerializer
  
 class RandomJokeAPIView(generics.RetrieveAPIView):
   '''

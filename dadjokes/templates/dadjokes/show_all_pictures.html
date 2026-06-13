@@ -1,4 +1,8 @@
-<!-- dadjokes/templates/dadjokes/show_all_pictures.html -->
+<!--
+    File: show_all_pictures.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/11/2026
+    Description: Template to display all pictures.
+-->
 {% extends 'dadjokes/base.html' %}
 
 {% block content %}
@@ -9,6 +13,7 @@
     {% for picture in pictures %}
     <article>
         <div>
+            <!-- displays the picture and its contributor -->
             <img src="{{picture.image_url}}" alt="picture" style="max-width:300px;">
             <h3>by {{picture.contributor}}</h3>
         </div>

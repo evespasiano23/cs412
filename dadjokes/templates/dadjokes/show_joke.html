@@ -1,4 +1,7 @@
-<!-- dadjokes/templates/dadjokes/show_joke.html
+<!--
+    File: show_joke.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/11/2026
+    Description: Template to display a single joke.
 -->
 {% extends 'dadjokes/base.html' %}
 
@@ -8,6 +11,7 @@
 <main class="grid-container">
     <article>
         <div>
+            <!-- displays the joke and contributor -->
             <h2>{{joke.text}}</h2>
             <h3>by {{joke.contributor}}</h3>
         </div>

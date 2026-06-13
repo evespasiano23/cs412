@@ -1,4 +1,7 @@
-<!-- dadjokes/templates/dadjokes/show_picture.html
+<!--
+    File: show_picture.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/11/2026
+    Description: Template to display a single picture.
 -->
 {% extends 'dadjokes/base.html' %}
 
@@ -8,6 +11,7 @@
 <main class="grid-container">
     <article>
         <div>
+            <!-- displays the picture and its contributor -->
             <img src="{{picture.image_url}}" alt="picture" style="max-width:500px;">
             <h3>by {{picture.contributor}}</h3>
         </div>

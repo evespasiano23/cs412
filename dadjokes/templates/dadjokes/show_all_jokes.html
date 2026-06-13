@@ -1,4 +1,8 @@
-<!-- dadjokes/templates/dadjokes/show_all_jokes.html -->
+<!--
+    File: show_all_jokes.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/11/2026
+    Description: Template to display all jokes.
+-->
 {% extends 'dadjokes/base.html' %}
 
 {% block content %}
@@ -9,6 +13,7 @@
     {% for joke in jokes %}
     <article>
         <div>
+            <!-- displays the joke and its contributor -->
             <h2>{{joke.text}}</h2>
             <h3>by {{joke.contributor}}</h3>
         </div>

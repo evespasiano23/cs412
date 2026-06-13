@@ -1,5 +1,7 @@
-<!-- dadjokes/templates/dadjokes/random.html
-    display a random joke and picture on this webpage
+<!--
+    File: random.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/11/2026
+    Description: Template to display a random joke and picture.
 -->
 {% extends 'dadjokes/base.html' %}
 
@@ -8,7 +10,7 @@
 
 <main class="grid-container">
     <article>
-        <!-- displays the random picture -->
+        <!-- displays the random picture if it exists-->
         {% if picture %}
             <img src="{{picture.image_url}}" alt="picture" style="max-width:500px;">
         {% else %}
@@ -16,7 +18,7 @@
         {% endif %}
 
         <div>
-            <!-- displays the random joke -->
+             <!-- displays the random joke and its contributor -->
             <h2>{{joke.text}}</h2>
             <h3>by {{joke.contributor}}</h3>
         </div>

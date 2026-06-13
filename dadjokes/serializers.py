@@ -1,6 +1,7 @@
-# dadjokes/serializers.py
-# Serializers convert our django data models to a 
-# text-representation suitable to transmit over HTTP.
+# File: serializers.py
+# Author: Emily Vespasiano (evespa@bu.edu), 6/11/2026
+# Description: Serializers for the dadjokes app. Converts the Joke and Picture
+# models to JSON format for the REST API.
  
 from rest_framework import serializers
 from .models import *
