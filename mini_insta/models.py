@@ -29,7 +29,7 @@ class Profile(models.Model):
     join_date = models.DateField(blank=True)
 
     # links profile to a user for authentication
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_profile')
 
     def __str__(self):
         '''Return a string representation of this Profile instance.'''
