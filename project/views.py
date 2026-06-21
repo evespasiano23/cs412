@@ -29,6 +29,7 @@ class MovieListView(ListView):
     model = Movie
     template_name = "project/show_all_movies.html"
     context_object_name = "movies"
+    ordering = ['title'] # orders movies by their title
 
 class MovieDetailView(DetailView):
     '''Display a single project Movie.'''
@@ -36,6 +37,13 @@ class MovieDetailView(DetailView):
     model = Movie
     template_name = "project/show_movie.html"
     context_object_name = "movie"
+
+    def get_context_data(self, **kwargs):
+        '''Return the dictionary of context variables for use in the template.'''
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['profile'] = Profile.objects.get(user=self.request.user)
+        return context
 
 class ProfileDetailView(DetailView):
     '''Display a single Profile.'''
@@ -293,6 +301,11 @@ class UnlikeReviewView(ProfileLoginMixin, TemplateView):
 
         # redirect to the review page
         return redirect(reverse('show_movie', kwargs={'pk': review.movie.pk}))
+class ShowWatchlistView(DetailView):
+    '''Display a Profile's watchlist.'''
+    model = Profile
+    template_name = "project/show_watchlist.html"
+    context_object_name = "profile"
 
 class AddToWatchlistView(ProfileLoginMixin, TemplateView):
     '''View to handle adding a Movie to a Profile's Watchlist.'''

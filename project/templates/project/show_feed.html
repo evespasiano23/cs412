@@ -1,0 +1,29 @@
+<!--
+    File: show_feed.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/20/2026
+    Description: Template to display a review feed for a specific profile based on who they are following.
+-->
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>{{profile.display_name}}'s Feed</h1>
+
+{% for review in profile.get_review_feed %}
+    <div style="border:1px solid #ff00ff; border-radius:8px; padding:16px; margin-bottom:10px;">
+        <!-- displays the profile image and the name of the review author -->
+        <img src="{{review.profile.profile_image_url}}" alt="" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+        <a href="{% url 'show_profile' review.profile.pk %}"><strong>@{{review.profile}}</strong></a>
+        <p style="font-size:12px; margin:0;">{{review.date_added}}</p>
+    </div>
+
+        <!-- displays movie being reviewed  -->
+        <a href="{% url 'show_movie' review.movie.pk %}"><strong>{{review.movie.title}}</strong></a>
+        <p>⭐ {{review.rating}}/5</p>
+        <p>{{review.review_text}}</p>
+    </div>
+{% empty %}
+    <p>Your feed is empty! Follow some profiles to see their reviews.</p>
+{% endfor %}
+
+{% endblock %}

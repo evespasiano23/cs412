@@ -1,0 +1,72 @@
+<!--
+    File: show_profile.html
+    Author: Emily Vespasiano (evespa@bu.edu),6/18/2026
+    Description: Template to display one singular Back to the Screen profile in a grid layout.
+    Shows details of users profile picture, display name, username, bio, favorite movie, 
+    follower/following count, and review(s).
+-->
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Showing Profile</h1>
+<a href="{% url 'show_all_movies' %}" style="text-decoration:none; color:#ff00ff; font-weight:bold;">← Back to All Movies</a>
+
+<div style="display:flex; align-items:center; gap:40px; padding:20px;">
+        <!-- displays circular profile picture to match Instagram formatting. -->
+        <img src="{{profile.profile_image_url}}" alt="" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:3px solid #ff00ff;">
+        
+        <!-- displays profile data: display name, user, bio, favorite movie, followers/following count, review count. -->
+        <div>
+            <h2 style="margin-bottom:5px;">{{profile.display_name}}</h2>
+            <p style="margin-top:0;">@{{profile.username}}</p>
+
+            <div style="display:flex; gap:20px;">
+                <p><a href="{% url 'show_followers' profile.pk %}" style="text-decoration:none; color:inherit;"><strong>{{profile.get_num_followers}}</strong> followers</a></p>
+                <p><a href="{% url 'show_following' profile.pk %}" style="text-decoration:none; color:inherit;"><strong>{{profile.get_num_following}}</strong> following</a></p>
+                <p><a href="{% url 'show_watchlist' profile.pk %}" style="text-decoration:none; color:inherit;"><strong>{{profile.get_num_watchlist}}</strong> watchlist</a></p>
+            </div>
+
+            <p>{{profile.bio_text}}</p>
+
+            <!-- displays the profile's favorite movie if set -->
+            {% if profile.favorite_movie %}
+                <p>🎬 <strong>Favorite Movie:</strong></p>
+                <a href="{% url 'show_movie' profile.favorite_movie.pk %}">
+                    <img src="{{profile.favorite_movie.movie_image_url}}" alt="{{profile.favorite_movie.title}}" style="width:120px; height:180px; object-fit:cover; border:3px solid #ff00ff; border-radius:8px;">
+                </a>
+            {% endif %}
+            
+            <div style="display:flex; gap:10px;">
+                <!-- link to update profile's profile (this includes: display name, profile picture, and bio)-->
+                  <!-- only allowed to update profile to the profile's owner -->
+                {% if request.user == profile.user %}
+                    <a href="{% url 'update_profile' %}"><button>Update Profile</button></a>
+                <!-- show the follow/unfollow button to other logged in users -->
+                {% elif request.user.is_authenticated %}
+                    {% if profile in request.user.profile_set.first.get_following %}
+                        <a href="{% url 'unfollow_profile' profile.pk %}"><button>Unfollow</button></a>
+                    {% else %}
+                    <a href="{% url 'follow_profile' profile.pk %}"><button>Follow</button></a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+<hr style="border-color:#ff00ff;">
+
+    <!-- display all reviews by a specific profile  -->
+    <h2>Reviews⭐⭐⭐</h2> 
+        <!-- loops through all reviews on the profile -->
+        {% for review in profile.get_all_reviews %}
+            <div style="border:1px solid #ff00ff; border-radius:8px; padding:16px; margin-bottom:10px;">
+                <a href="{% url 'show_movie' review.movie.pk %}"><strong>{{review.movie.title}}</strong></a>
+                <p>⭐ {{review.rating}}/5</p>
+                <p>{{review.review_text}}</p>
+            </div>
+        {% empty %}
+            <p>No reviews yet.</p>
+        {% endfor %}
+
+    {% endblock %}

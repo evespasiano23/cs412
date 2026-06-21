@@ -1,0 +1,28 @@
+<!--
+    File: show_watchlist.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/20/2026
+    Description: Template to display a singular Profile's Watchlist.
+-->
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>{{profile.display_name}}'s Watchlist 🍿</h1>
+<a href="{% url 'show_profile' profile.pk %}" style="text-decoration:none; color:#ff00ff; font-weight:bold;">← Back to {{profile.display_name}}'s Profile</a>
+<main class="grid-container">
+    <!-- loops through all movies on this Profile's watchlist -->
+    {% for movie in profile.get_watchlist %}
+        <article>
+            <a href="{% url 'show_movie' movie.pk %}">
+                <img src="{{movie.movie_image_url}}" alt="{{movie.title}}" style="width:100%; height:300px; object-fit:contain;">
+            </a>
+            <div>
+                <h2 style="margin:0;">{{movie.title}}</h2>
+            </div>
+        </article>
+    {% empty %}
+        <p>No movies on the watchlist yet.</p>
+    {% endfor %}
+</main>
+
+{% endblock %}

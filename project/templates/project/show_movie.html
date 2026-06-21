@@ -1,0 +1,92 @@
+<!--
+    File: show_movie.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/18/2026
+    Description: Template to display a single movie page on Back to the Screen.
+-->
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div style="max-width:900px; margin:0 auto; padding:20px;">
+
+    <!-- displays the movie title, year, genre, and director -->
+    <h1>{{movie.title}}</h1>
+    <p>{{movie.year}} · {{movie.genre}} · Directed by {{movie.director}}</p>
+
+    <!-- displays the movie poster -->
+    <div style="display:flex; gap:30px; margin-bottom:20px;">
+        <img src="{{movie.movie_image_url}}" alt="{{movie.title}}" style="width:300px; height:450px; object-fit:cover; border:3px solid #ff00ff; border-radius:8px;">
+
+        <div>
+            <!-- displays the movie description -->
+            <p>{{movie.movie_description}}</p>
+
+            <!-- displays the average rating -->
+            <p>⭐ <strong>Average Rating:</strong> {{movie.get_average_rating}}</p>
+
+        
+            <!-- add to watchlist + review button for logged in users -->
+            {% if request.user.is_authenticated %}
+                {% if profile in movie.get_watchlist_profiles %}
+                    <a href="{% url 'remove_watchlist' movie.pk %}"><button>Remove from Watchlist 🎬</button></a>
+                {% else %}
+                    <a href="{% url 'add_watchlist' movie.pk %}"><button>Add to Watchlist 🎬</button></a>
+                {% endif %}
+                <!-- link to create a review for this movie -->
+                <a href="{% url 'create_review' movie.pk %}"><button>Write a Review ✍️</button></a>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <hr style="border-color:#ff00ff;">
+    <!-- loops through each review associated with a movie -->
+    <h2>Reviews</h2>
+    {% for review in movie.get_all_reviews %}
+        <div style="border:1px solid #ddd; border-radius:8px; padding:16px; margin-bottom:10px;">
+            <!-- displays the movie reviewer's profile picture and username -->
+            <div style="display:flex; align-items:center; gap:10px;">
+                <img src="{{review.profile.profile_image_url}}" alt="" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+                <a href="{% url 'show_profile' review.profile.pk %}"><strong>@{{review.profile}}</strong></a>
+                <p style="font-size:12px; margin:0;">{{review.date_added}}</p>
+            </div>
+
+            <!-- display review rating and review text -->
+            <p>⭐ <strong>{{review.rating}}/5</strong></p>
+            <p>{{review.review_text}}</p>
+
+            <!--if review has no likes, displays no likes yet -->
+            {% if review.get_likes.count == 0 %}
+                <p>No likes yet</p>
+            {% elif review.get_likes.count == 1 %}
+                <p>Liked by <strong>@{{review.get_likes.first.profile}}</strong></p>
+            {% elif review.get_likes_count == 1 %}
+                <p>Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>1 other</strong></p>
+            {% else %}
+                <p>Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>{{review.get_likes_count}} others</strong></p>
+            {% endif %}
+
+            <!-- displays like/unlike buttons to logged in user's viewing a review that isn't theirs -->
+            {% if request.user.is_authenticated and request.user != review.profile.user %}
+                {% if profile in review.get_likes_profiles %}
+                    <a href="{% url 'unlike_review' review.pk %}"><button>Unlike 💙</button></a>
+                {% else %}
+                    <a href="{% url 'like_review' review.pk %}"><button>Like 🤍</button></a>
+                {% endif %}
+            {% endif %}
+   
+            <!-- update/delete buttons for the review owner -->
+            {% if request.user == review.profile.user %}
+                <a href="{% url 'update_review' review.pk %}"><button>Update Review</button></a>
+                <a href="{% url 'delete_review' review.pk %}"><button>Delete Review</button></a>
+            {% endif %}
+
+        </div>
+    {% empty %}
+        <p>No reviews yet. Be the first to review!</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

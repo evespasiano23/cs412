@@ -48,9 +48,18 @@ class Movie(models.Model):
     def get_average_rating(self):
         '''Return the average rating for this specific movie.'''
         reviews = self.get_all_reviews()
-        if reviews.count() == 0:
+        rated_reviews = [r for r in reviews if r.rating is not None]
+        if len(rated_reviews) == 0:
             return "No reviews yet."
-        return sum([r.rating for r in reviews]) / reviews.count()
+        return sum([r.rating for r in rated_reviews]) / len(rated_reviews)
+
+    def get_watchlist_profiles(self):
+        '''Return a list of Profiles that have added this movie to their watchlist.'''
+        watchlists = Watchlist.objects.filter(movie=self)
+        profiles = []
+        for watchlist in watchlists:
+            profiles.append(watchlist.profile)
+        return profiles
 
 
 class Profile(models.Model):
@@ -69,6 +78,9 @@ class Profile(models.Model):
 
     # profile biography written by the user
     bio_text = models.TextField(blank=True)
+
+    # profile favorite movie
+    favorite_movie = models.ForeignKey('Movie', on_delete=models.SET_NULL, blank=True, null=True, related_name='favorited_by_profiles')
 
 
     # links profile to a user for authentication
@@ -124,6 +136,18 @@ class Profile(models.Model):
         reviews.sort(key=lambda post: post.date_added, reverse=True)
         return reviews 
 
+    def get_watchlist(self):
+        '''Return all movies on this Profile's watchlist.'''
+        watchlists = Watchlist.objects.filter(profile=self)
+        movies = []
+        for watchlist in watchlists:
+            movies.append(watchlist.movie)
+        return movies
+
+    def get_num_watchlist(self):
+        '''Return the count of movies on this Profile's watchlist.'''
+        return len(self.get_watchlist())
+
 
 class Review(models.Model):
     '''Encapsulate the data of a review associated with a Movie'''
@@ -147,7 +171,15 @@ class Review(models.Model):
     
     def get_likes_count(self):
         '''Return the number of likes on this specific review.'''
-        return self.get_likes().count()
+        return self.get_likes().count() - 1
+
+    def get_likes_profiles(self):
+        '''Return a list of Profiles that have liked a specific review.'''
+        likes = self.get_likes()
+        profiles = []
+        for like in likes:
+            profiles.append(like.profile)
+        return profiles
 
 class Watchlist(models.Model):
     '''Encapsulate the data of a Movie that is saved to a Profile's Watchlist.'''

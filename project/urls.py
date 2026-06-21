@@ -74,5 +74,8 @@ urlpatterns = [
 
     # url to remove a movie from a profile's watchlist
     path('movie/<int:pk>/remove_watchlist', RemoveFromWatchlistView.as_view(), name='remove_watchlist'),
+
+    # url to show a profile's watchlist 
+    path('profile/<int:pk>/watchlist', ShowWatchlistView.as_view(), name='show_watchlist'),
 ]
 

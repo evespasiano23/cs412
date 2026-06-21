@@ -1,0 +1,24 @@
+<!--
+    File: create_review_form.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/18/2026
+    Description: Displays the HTML form to create a new Review object.
+-->
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Create a new Review for <strong>{{movie.title}}</strong></h1>
+
+<!-- display the HTML form -->
+<form action="{% url 'create_review' movie.pk %}" method="POST" 
+    enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{form.as_table}}
+    </table>
+
+    <input type="submit" name="submit" value="Submit">
+    <!-- cancel button to allow user to return to the movie page without creating a new review -->
+    <a href="{% url 'show_movie' pk=movie.pk %}">Cancel</a>
+</form>
+
+{% endblock %}

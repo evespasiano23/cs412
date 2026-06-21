@@ -1,0 +1,25 @@
+<!--
+    File: delete_review_form.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/18/2026
+    Description: Displays the HTML form to delete a Review object.
+-->
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h3>Are you sure you want to delete this review?</h3>
+<p>
+    {{review}}
+</p>
+
+<!-- form to submit the delete request -->
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Delete">
+</form>
+<!-- form to cancel the delete request -->
+<form action="{% url 'show_movie' movie.pk %}" method="GET">
+    {% csrf_token %}
+    <input type="submit" value="Cancel">
+</form>
+{% endblock %}

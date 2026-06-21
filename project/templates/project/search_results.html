@@ -1,0 +1,42 @@
+<!--
+    File: search_results.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/18/2026
+    Description: Displays the search results for a specific Movie or Profile given a specific query.
+-->
+{% extends 'project/base.html' %}
+
+{% block content %}
+<a href="{% url 'own_profile' %}">← Back to Profile</a>
+<!-- for Profiles that match the query -->
+<h1>Profiles matching {{query}}</h1>
+
+<!-- loops through all Profiles that match the user query -->
+{% for profile in profiles %}
+    <div style="display:inline-block; text-align:center;">
+        <a href="{% url 'show_profile' profile.pk %}">
+            <img src="{{profile.profile_image_url}}" alt="" style="width:100px; height:100px; border-radius:50%; object-fit:cover;">
+        </a>
+        <p style="color:black;">@{{profile.username}}</p>
+    </div>
+{% empty %}
+    <p>No profiles found.</p>
+{% endfor %}
+
+<!-- for Movies that match the query -->
+<h1>Movie(s) matching {{query}}</h1>
+
+<!-- loops through all Movies that match the user query -->
+{% for movie in movies %}
+    <div style="display:inline-block; text-align:center;">
+        <!-- displays the movie poster and movie title -->
+        <a href="{% url 'show_movie' movie.pk %}">
+            <img src="{{movie.movie_image_url}}" alt="{{movie.title}}" style="width:150px; height:225px; object-fit:cover;">
+        </a>
+        <strong>{{movie.title}}</strong>
+    </div>
+
+{% empty %}
+    <p>No movies found.</p>
+{% endfor %}
+ 
+{% endblock %}

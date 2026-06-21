@@ -1,0 +1,65 @@
+<!--
+    File: base.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/18/2026
+    Description: Shared HTML template for the project app that all 
+    of the other templates extend. Includes the navigation header and stylesheet. 
+-->
+{% load static %}
+
+<html>
+    <head>
+        <title>Back to the Screen</title>
+        <!-- Linking the CSS stylesheet-->
+        <link rel="stylesheet" href="{% static 'styles-project.css' %}">
+    </head>
+
+    <body>
+        <header style="border-bottom: 2px solid #00ffff; text-align:center;">
+            <h1>Back to the Screen</h1>
+            <nav>
+                <ul>
+                    <!-- URLs for logged in users only -->
+                    {% if request.user.is_authenticated %}
+                    <li>
+                        <form method="POST" action="{% url 'project_logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <!-- URLs for users who are not logged in -->
+                    <li><a href="{% url 'project_login' %}">Login</a></li>
+                    <li><a href="{% url 'create_profile' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+                <hr style="border-color:#00ffff;">
+                <!-- display to notify user if they are logged in or not at the top of the site -->
+                {% if request.user.is_authenticated %}
+                    <p style="color:#00ffff;">Logged in as: {{request.user}}</p>
+                {% else %}
+                    <p style="color:#00ffff;">Not logged in.</p>
+                {% endif %}
+            </nav>
+        </header>
+
+        <!-- substitute in the specific content here -->
+        {% block content %}
+        {% endblock %}
+
+        <!-- bottom navigation bar -->
+        <nav style="position:fixed; bottom:0; width:100%; background:#1a0033; border-top:1px solid #ff00ff; display:flex; justify-content:space-around; padding:10px;">
+            <!-- restricts feed and search options to logged in users only-->
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'show_all_movies' %}" style="text-align:center; text-decoration:none; color: #ff00ff;">🎬<br><small>Movies</small></a>
+                <a href="{% url 'show_feed' %}" style="text-align:center; text-decoration:none; color: #ff00ff;">📰<br><small>Feed</small></a>
+                <a href="{% url 'search' %}" style="text-align:center; text-decoration:none; color: #ff00ff;">🔍<br><small>Search</small></a>
+                <a href="{% url 'own_profile' %}" style="text-align:center; text-decoration:none; color: #ff00ff;">👤<br><small>Profile</small></a>
+            <!-- navigation bar for non logged in user's-->
+            {% else %}
+                <a href="{% url 'show_all_movies' %}" style="text-align:center; text-decoration:none; color: #ff00ff;">🎬<br><small>Movies</small></a>
+            {% endif %}
+        
+        </nav>
+    </body>
+
+</html>

@@ -1,0 +1,32 @@
+<!--
+    File: show_all_movies.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/18/2026
+    Description: Template to display all of the Back to the Screen movies in a grid layout.
+    Each individual movie links to its own movie page.
+-->
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>All Movies</h1>
+<p style="text-align:center; font-size:12px; letter-spacing:4px;">🎬 RATE · REVIEW · DISCOVER 🎬</p>
+
+<main class="grid-container">
+    <!-- scriptlet code for a for loop. This loops over every movie and displays it as a card. -->
+    {% for movie in movies %}
+    <article style="border-radius:12px; overflow:hidden; background:white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding:0;">
+        <!-- clicking on the image links to that specific movies's information page -->
+        <a href="{% url 'show_movie' movie.pk %}">
+            <img src="{{movie.movie_image_url}}" alt="{{movie.title}}" style="width:100%; height:400px; object-fit:contain; background:#0d0d0d;">
+        </a>
+        <!-- so that the display shows the movie title, director, year, and genre below the movie poster -->
+        <div style="padding:16px;">
+            <h2 style="margin:0 0 4px 0;">{{movie.title}}</h2>
+            <p style="color:gray; margin:0 0 4px 0;">{{movie.year}} · {{movie.genre}}</p>
+            <p style="color:navy; margin:0;">Directed by {{movie.director}}</p>
+            <p style="margin:0; color:#FFD700;">⭐ {{movie.get_average_rating}}</p>
+        </div>
+    </article>
+
+    {% endfor %}
+</main>
+{% endblock %}

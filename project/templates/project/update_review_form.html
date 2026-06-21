@@ -1,0 +1,26 @@
+<!--
+    File: update_review_form.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/18/2026
+    Description: Template to display the HTML form to update a Review object.
+-->
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Update this Review</h1>
+ 
+<!-- display the HTML form -->
+<form action="{% url 'update_review' review.pk %}" method="POST"
+    enctype="multipart/form-data">
+    
+    {% csrf_token %}
+    <table>
+    {{form.as_table}}
+    </table>
+
+    <input type="submit" name="submit" value="Update">
+</form>
+<!-- Add a separate form for a cancel button -->
+<form action="{% url 'show_review' review.pk %}" method="GET">
+    <input type="submit" value="Cancel">
+</form>
+{% endblock %}
