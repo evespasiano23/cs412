@@ -1,0 +1,32 @@
+<!--
+    File: create_profile_form.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/20/2026
+    Description: Displays the HTML form to create a new Profile object.
+-->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Create a Profile</h1>
+
+<!-- display the HTML form -->
+<form action="{% url 'create_profile' %}" method="POST" 
+    enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <h2>User Information</h2>
+    <table>
+        {{user_form.as_table}}
+    </table>
+
+    <h2>Profile Information</h2>
+    <table>
+        {{form.as_table}}
+    </table>
+
+    <input type="submit" value="Create Profile">
+    <!-- cancel button to allow user to return to home page (all movies) without creating a new profile -->
+    <a href="{% url 'show_all_movies' %}"><button type="button">Cancel</button></a>
+</form>
+
+{% endblock %}

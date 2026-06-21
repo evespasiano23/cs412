@@ -60,6 +60,13 @@ class ProfileDetailView(DetailView):
         if self.request.user.is_authenticated:
             return Profile.objects.get(user=self.request.user)
         return None
+    
+    def get_context_data(self, **kwargs):
+        '''Return the dictionary of context variables for use in the template.'''
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['current_profile'] = Profile.objects.filter(user=self.request.user).first()
+        return context
 
 class UpdateProfileView(ProfileLoginMixin, UpdateView):
     '''View class to handle update of an profile based on its PK.'''
@@ -106,6 +113,7 @@ class CreateProfileView(CreateView):
             login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
             # attach this user to the profile
             form.instance.user = user
+            form.instance.username = user.username
             return super().form_valid(form)  # saves post via superclass
         else:
             return self.form_invalid(form)
