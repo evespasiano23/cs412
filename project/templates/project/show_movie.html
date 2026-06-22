@@ -10,6 +10,9 @@
 
 <div style="max-width:900px; margin:0 auto; padding:20px;">
 
+    <!-- link back to all movies -->
+    <a href="{% url 'show_all_movies' %}" style="text-decoration:none; color:#00ffff; font-weight:bold;">← Back to All Movies</a>
+
     <!-- displays the movie title, year, genre, and director -->
     <h1>{{movie.title}}</h1>
     <p>{{movie.year}} · {{movie.genre}} · Directed by {{movie.director}}</p>
@@ -20,7 +23,7 @@
 
         <div>
             <!-- displays the movie description -->
-            <p>{{movie.movie_description}}</p>
+            <p style="color:#fff; opacity:0.9; line-height:1.6;">{{movie.movie_description}}</p>
 
             <!-- displays the average rating -->
             <p>⭐ <strong>Average Rating:</strong> {{movie.get_average_rating}}</p>
@@ -48,7 +51,7 @@
             <!-- displays the movie reviewer's profile picture and username -->
             <div style="display:flex; align-items:center; gap:10px;">
                 <img src="{{review.profile.profile_image_url}}" alt="" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
-                <a href="{% url 'show_profile' review.profile.pk %}"><strong>@{{review.profile}}</strong></a>
+                <a href="{% url 'show_profile' review.profile.pk %}" class="username-link"><strong>@{{review.profile}}</strong></a>
                 <p style="font-size:12px; margin:0;">{{review.date_added}}</p>
             </div>
 
@@ -56,23 +59,23 @@
             <p>⭐ <strong>{{review.rating}}/5</strong></p>
             <p>{{review.review_text}}</p>
 
-            <!--if review has no likes, displays no likes yet -->
+            <!-- displays like count -->
             {% if review.get_likes.count == 0 %}
-                <p>No likes yet</p>
+               <p style="color:#888; font-size:0.85em; margin-top:12px;">No likes yet</p>
             {% elif review.get_likes.count == 1 %}
-                <p>Liked by <strong>@{{review.get_likes.first.profile}}</strong></p>
+               <p style="color:#888; font-size:0.85em; margin-top:12px;">Liked by <strong>@{{review.get_likes.first.profile}}</strong></p>
             {% elif review.get_likes_count == 1 %}
-                <p>Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>1 other</strong></p>
+               <p style="color:#888; font-size:0.85em; margin-top:12px;">Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>1 other</strong></p>
             {% else %}
-                <p>Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>{{review.get_likes_count}} others</strong></p>
+               <p style="color:#888; font-size:0.85em; margin-top:12px;">Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>{{review.get_likes_count}} others</strong></p>
             {% endif %}
 
             <!-- displays like/unlike buttons to logged in user's viewing a review that isn't theirs -->
             {% if request.user.is_authenticated and request.user != review.profile.user %}
                 {% if profile in review.get_likes_profiles %}
-                    <a href="{% url 'unlike_review' review.pk %}"><button>Unlike 💙</button></a>
+                    <a href="{% url 'unlike_review' review.pk %}?next={{request.path}}"><button>Unlike 💙</button></a>
                 {% else %}
-                    <a href="{% url 'like_review' review.pk %}"><button>Like 🤍</button></a>
+                    <a href="{% url 'like_review' review.pk %}?next={{request.path}}"><button>Like 🤍</button></a>
                 {% endif %}
             {% endif %}
    

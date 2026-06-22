@@ -8,7 +8,7 @@
 
 {% block content %}
 <h1>{{profile.display_name}}'s Watchlist 🍿</h1>
-<a href="{% url 'show_profile' profile.pk %}" style="text-decoration:none; color:#ff00ff; font-weight:bold;">← Back to {{profile.display_name}}'s Profile</a>
+<a href="{% url 'show_profile' profile.pk %}" style="text-decoration:none; color:#00ffff; font-weight:bold;">← Back to {{profile.display_name}}'s Profile</a>
 <main class="grid-container">
     <!-- loops through all movies on this Profile's watchlist -->
     {% for movie in profile.get_watchlist %}

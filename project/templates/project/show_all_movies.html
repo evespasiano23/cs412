@@ -7,8 +7,29 @@
 {% extends 'project/base.html' %}
 
 {% block content %}
-<h1>All Movies</h1>
+{% if selected_genre %}
+    <h1>{{selected_genre}} Movies🍿</h1>
+{% else %}
+    <h1>All Movies🍿</h1>
+{% endif %}
 <p style="text-align:center; font-size:12px; letter-spacing:4px;">🎬 RATE · REVIEW · DISCOVER 🎬</p>
+
+<!-- genre filter buttons -->
+<div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:20px 0;">
+    {% if not selected_genre %}
+        <a href="{% url 'show_all_movies' %}"><button>All</button></a>
+    {% else %}
+        <a href="{% url 'show_all_movies' %}"><button style="background:transparent; color:#ff00ff;">All</button></a>
+    {% endif %}
+
+    {% for genre in genres %}
+        {% if selected_genre == genre %}
+            <a href="?genre={{genre}}"><button>{{genre}}</button></a>
+        {% else %}
+            <a href="?genre={{genre}}"><button style="background:transparent; color:#ff00ff;">{{genre}}</button></a>
+        {% endif %}
+    {% endfor %}
+</div>
 
 <main class="grid-container">
     <!-- scriptlet code for a for loop. This loops over every movie and displays it as a card. -->

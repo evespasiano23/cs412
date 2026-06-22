@@ -15,7 +15,7 @@
            <div style="display:flex; align-items:center; gap:12px;">
             <img src="{{review.profile.profile_image_url}}" alt="" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
             <div>
-                <a href="{% url 'show_profile' review.profile.pk %}" style="color:#fff;"><strong>@{{review.profile}}</strong></a>
+                <a href="{% url 'show_profile' review.profile.pk %}" class="username-link"><strong>@{{review.profile}}</strong></a>
                 <p style="font-size:12px; margin:0; opacity:0.7;">{{review.date_added}}</p>
             </div>
         </div>
@@ -24,6 +24,26 @@
         <a href="{% url 'show_movie' review.movie.pk %}"><strong style="display:block; margin-top:12px; margin-bottom:8px;">{{review.movie.title}}</strong></a>
         <p style="font-size:0.9em; margin:0 0 6px 0;">⭐ {{review.rating}}/5</p>
         <p style="font-size:0.9em; margin:0;">{{review.review_text}}</p>
+
+        <!-- displays like count -->
+        {% if review.get_likes.count == 0 %}
+            <p style="color:#888; font-size:0.85em; margin-top:12px;">No likes yet</p>
+        {% elif review.get_likes.count == 1 %}
+            <p style="color:#888; font-size:0.85em; margin-top:12px;">Liked by <strong>@{{review.get_likes.first.profile}}</strong></p>
+        {% elif review.get_likes_count == 1 %}
+            <p style="color:#888; font-size:0.85em; margin-top:12px;">Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>1 other</strong></p>
+        {% else %}
+            <p style="color:#888; font-size:0.85em; margin-top:12px;">Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>{{review.get_likes_count}} others</strong></p>
+        {% endif %}
+
+        <!-- displays like/unlike buttons to logged in user's viewing a review that isn't theirs -->
+        {% if request.user.is_authenticated and request.user != review.profile.user %}
+            {% if profile in review.get_likes_profiles %}
+                <a href="{% url 'unlike_review' review.pk %}?next={{request.path}}"><button>Unlike 💙</button></a>
+            {% else %}
+                <a href="{% url 'like_review' review.pk %}?next={{request.path}}"><button>Like 🤍</button></a>
+            {% endif %}
+        {% endif %}
     </div>
 {% empty %}
     <p>Your feed is empty! Follow some profiles to see their reviews.</p>

@@ -134,6 +134,15 @@ a:hover, button:hover, article img:hover {
     color: #fff;
 }
 
+/* so that the username turns blue when you hover over the username that created a review on a movie's profile page */
+.username-link {
+    color: #ff00ff;
+}
+
+.username-link:hover {
+    color: #00ffff;
+}
+
 /* responsive styles: adapt to smaller screen sizes */
 @media screen and (max-width: 980px) {
 

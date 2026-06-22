@@ -31,6 +31,30 @@ class MovieListView(ListView):
     context_object_name = "movies"
     ordering = ['title'] # orders movies by their title
 
+    def get_queryset(self):
+        '''Returns movies filtered by their genre if one is selected.'''
+        genre = self.request.GET.get('genre', '')
+        if genre:
+            return Movie.objects.filter(genre__icontains=genre).order_by('title')
+        return Movie.objects.all().order_by('title')
+
+    def get_context_data(self, **kwargs):
+        '''Return the dictionary of context variables for use in the template.'''
+        context = super().get_context_data(**kwargs)
+        # build a list of every genre that appears across all movies
+        genres = []
+        for movie in Movie.objects.all():
+            movie_genres = movie.genre.split('/') # splits a specific movie's genre by "/" if it has multiple genres
+            for single_genre in movie_genres:
+                if single_genre not in genres:
+                    genres.append(single_genre)
+
+        genres.sort() # sorts the genres in alphabetical order
+        context['genres'] = genres
+        context['selected_genre'] = self.request.GET.get('genre', '')
+        return context
+
+
 class MovieDetailView(DetailView):
     '''Display a single project Movie.'''
 
@@ -289,7 +313,10 @@ class LikeReviewView(ProfileLoginMixin, TemplateView):
         # add the like to the review
         Like.objects.create(review=review, profile=profile)
 
-        # redirect to the review page
+        # redirect back to the page the request came from, if provided
+        next_url = request.GET.get('next')
+        if next_url:
+            return redirect(next_url)
         return redirect(reverse('show_movie', kwargs={'pk': review.movie.pk}))
 
 class UnlikeReviewView(ProfileLoginMixin, TemplateView): 
@@ -307,8 +334,12 @@ class UnlikeReviewView(ProfileLoginMixin, TemplateView):
         # remove the like from the review
         Like.objects.filter(review=review, profile=profile).delete()
 
-        # redirect to the review page
+        # redirect back to the page the request came from, if provided
+        next_url = request.GET.get('next')
+        if next_url:
+            return redirect(next_url)
         return redirect(reverse('show_movie', kwargs={'pk': review.movie.pk}))
+
 class ShowWatchlistView(DetailView):
     '''Display a Profile's watchlist.'''
     model = Profile

@@ -10,11 +10,11 @@
 
 {% block content %}
 <h1>Showing Profile</h1>
-<a href="{% url 'show_all_movies' %}" style="text-decoration:none; color:#ff00ff; font-weight:bold;">← Back to All Movies</a>
+<a href="{% url 'show_all_movies' %}" style="text-decoration:none; color:#00ffff; font-weight:bold;">← Back to All Movies</a>
 
 <div style="display:flex; align-items:flex-start; gap:40px; padding:20px;">
         <!-- displays circular profile picture to match Instagram formatting. -->
-        <img src="{{profile.profile_image_url}}" alt="" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:3px solid #ff00ff; flex-shrink:0;">
+        <img src="{{profile.profile_image_url}}" alt="" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:3px solid #00ffff; flex-shrink:0;">
         
         <!-- displays profile data: display name, user, bio, favorite movie, followers/following count, review count. -->
         <div>
@@ -30,16 +30,6 @@
             </div>
 
             <p style="margin-bottom:20px;">{{profile.bio_text}}</p>
-
-            <!-- displays the profile's favorite movie if set -->
-            {% if profile.favorite_movie %}
-                <div style="border:1px solid #ff00ff; border-radius:8px; padding:20px; margin:0 20px 30px 20px; display:inline-block;">
-                    <p style="margin-top:0; margin-bottom:12px;">🎬 <strong>Favorite Movie:</strong></p>
-                    <a href="{% url 'show_movie' profile.favorite_movie.pk %}">
-                        <img src="{{profile.favorite_movie.movie_image_url}}" alt="{{profile.favorite_movie.title}}" style="width:120px; height:180px; object-fit:cover; border:3px solid #ff00ff; border-radius:8px; display:block;">
-                    </a>
-                </div>
-            {% endif %}
             
             <div style="display:flex; gap:10px;">
                 <!-- link to update profile's profile (this includes: display name, profile picture, and bio)-->
@@ -56,6 +46,16 @@
                 {% endif %}
             </div>
         </div>
+
+        <!-- displays the profile's favorite movie if set -->
+        {% if profile.favorite_movie %}
+            <div style="border:1px solid #00ffff; border-radius:8px; padding:20px; margin:0 20px 30px 20px; display:inline-block; text-align:center;">
+                <p style="margin-top:0; margin-bottom:12px;">🎬 <strong>Favorite Movie:</strong></p>
+                <a href="{% url 'show_movie' profile.favorite_movie.pk %}">
+                    <img src="{{profile.favorite_movie.movie_image_url}}" alt="{{profile.favorite_movie.title}}" style="width:120px; height:180px; object-fit:cover; border-radius:8px; display:block; margin:0 auto;">
+                </a>
+            </div>
+        {% endif %}
     </div>
 
 <hr style="border-color:#ff00ff;">
@@ -64,29 +64,35 @@
     <h2>Reviews⭐⭐⭐</h2> 
         <!-- loops through all reviews on the profile -->
         {% for review in profile.get_all_reviews %}
-            <div style="border:1px solid #ff00ff; border-radius:8px; padding:16px; margin-bottom:10px;">
+            <div style="border:1px solid #00ffff; border-radius:8px; padding:16px; margin-bottom:10px;">
                 <a href="{% url 'show_movie' review.movie.pk %}"><strong>{{review.movie.title}}</strong></a>
                 <p>⭐ {{review.rating}}/5</p>
                 <p>{{review.review_text}}</p>
 
                 <!-- displays like count -->
                 {% if review.get_likes.count == 0 %}
-                    <p>No likes yet</p>
+                    <p style="color:#888; font-size:0.85em; margin-top:12px;">No likes yet</p>
                 {% elif review.get_likes.count == 1 %}
-                    <p>Liked by <strong>@{{review.get_likes.first.profile}}</strong></p>
+                    <p style="color:#888; font-size:0.85em; margin-top:12px;">Liked by <strong>@{{review.get_likes.first.profile}}</strong></p>
                 {% elif review.get_likes_count == 1 %}
-                    <p>Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>1 other</strong></p>
+                    <p style="color:#888; font-size:0.85em; margin-top:12px;">Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>1 other</strong></p>
                 {% else %}
-                    <p>Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>{{review.get_likes_count}} others</strong></p>
+                    <p style="color:#888; font-size:0.85em; margin-top:12px;">Liked by <strong>@{{review.get_likes.first.profile}}</strong> and <strong>{{review.get_likes_count}} others</strong></p>
                 {% endif %}
 
                 <!-- displays like/unlike buttons to logged in user's viewing a review that isn't theirs -->
                 {% if request.user.is_authenticated and request.user != review.profile.user %}
                     {% if current_profile in review.get_likes_profiles %}
-                        <a href="{% url 'unlike_review' review.pk %}"><button>Unlike 💙</button></a>
+                        <a href="{% url 'unlike_review' review.pk %}?next={{request.path}}"><button>Unlike 💙</button></a>
                     {% else %}
-                        <a href="{% url 'like_review' review.pk %}"><button>Like 🤍</button></a>
+                        <a href="{% url 'like_review' review.pk %}?next={{request.path}}"><button>Like 🤍</button></a>
                     {% endif %}
+                {% endif %}
+
+                <!-- update/delete buttons for the review owner -->
+                {% if request.user == review.profile.user %}
+                    <a href="{% url 'update_review' review.pk %}"><button>Update Review</button></a>
+                    <a href="{% url 'delete_review' review.pk %}"><button>Delete Review</button></a>
                 {% endif %}
             </div>
         {% empty %}

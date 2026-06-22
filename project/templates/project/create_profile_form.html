@@ -14,12 +14,12 @@
     enctype="multipart/form-data">
     {% csrf_token %}
 
-    <h2>User Information</h2>
+    <h2  style="color:#00ffff">User Information</h2>
     <table>
         {{user_form.as_table}}
     </table>
 
-    <h2>Profile Information</h2>
+    <h2 style="color:#00ffff">Profile Information</h2>
     <table>
         {{form.as_table}}
     </table>
