@@ -1,0 +1,27 @@
+<!--
+    File: movie_of_the_day.html
+    Author: Emily Vespasiano (evespa@bu.edu), 6/21/2026
+    Description: Template to display the randomized movie of the way, which resets/changes every 24 hours.
+-->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>🎬 Movie of the Day</h1>
+<p style="text-align:center; font-size:12px; letter-spacing:4px;">A NEW PICK EVERY 24 HOURS</p>
+
+{% if movie_of_the_day %}
+    <div style="text-align:center; margin:30px 0;">
+        <a href="{% url 'show_movie' movie_of_the_day.pk %}" style="text-decoration:none;">
+            <img src="{{movie_of_the_day.movie_image_url}}" alt="{{movie_of_the_day.title}}" style="width:300px; height:450px; object-fit:cover; border:3px solid #ff00ff; border-radius:8px;">
+        </a>
+        <h2 style="margin-top:16px;">{{movie_of_the_day.title}}</h2>
+        <p style="color:#888;">{{movie_of_the_day.year}} · {{movie_of_the_day.genre}}</p>
+        <p style="color:#888;">Directed by {{movie_of_the_day.director}}</p>
+        <p>⭐ <strong>Average Rating:</strong> {{movie_of_the_day.get_average_rating}}</p>
+    </div>
+{% else %}
+    <p>No movies available yet.</p>
+{% endif %}
+
+{% endblock %}

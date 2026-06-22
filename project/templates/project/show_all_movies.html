@@ -31,6 +31,18 @@
     {% endfor %}
 </div>
 
+<!-- movie of the day highlight-->
+{% if movie_of_the_day %}
+    <div style="text-align: center; margin:30px 0;">
+        <h2 style="margin-bottom:10px;">🎬 Movie of the Day</h2>
+        <a href="{% url 'show_movie' movie_of_the_day.pk %}" style="text-decoration:none;">
+            <img src="{{movie_of_the_day.movie_image_url}}" alt="{{movie_of_the_day.title}}" style="width:200px; height:300px; object-fit:cover; border:3px solid #ff00ff; border-radius:8px;">
+        </a>
+        <p style="color:#fff; margin-top:10px;"><strong>{{movie_of_the_day.title}}</strong></p>
+        <p style="color:#888; font-size:0.9em;">{{movie_of_the_day.year}} · {{movie_of_the_day.genre}}</p>
+    </div>
+{% endif %}
+
 <main class="grid-container">
     <!-- scriptlet code for a for loop. This loops over every movie and displays it as a card. -->
     {% for movie in movies %}

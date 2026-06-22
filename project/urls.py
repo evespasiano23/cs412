@@ -14,6 +14,9 @@ urlpatterns = [
     # url to show the list of all movies on BackToTheScreen
     path('', MovieListView.as_view(), name='show_all_movies'),
 
+    # url to show the randomly chosen movie of the day which resets/changes every 24 hours
+    path('movie_of_the_day', MovieOfTheDayView.as_view(), name='movie_of_the_day'),
+
     # url to show user info for a singular profile page identified by the primary key
     path('profile/<int:pk>', ProfileDetailView.as_view(), name='show_profile'),
 

@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin ## for authentication
 from django.contrib.auth.forms import UserCreationForm ## for new user
 from django.contrib.auth import login
 from datetime import date
+import random 
 
 class ProfileLoginMixin(LoginRequiredMixin):
     '''Mixin class that handles login requirements for views classes.'''
@@ -421,3 +422,25 @@ class SearchView(ProfileLoginMixin, ListView):
                                Profile.objects.filter(display_name__icontains=query))
         return context
 
+class MovieOfTheDayView(TemplateView):
+    '''Displays the movie of the day, which resets/changes every 24 hours.'''
+
+    template_name = "project/movie_of_the_day.html"
+
+    def get_context_data(self, **kwargs):
+        '''Return the dictionary of context variables for use in the template.'''
+        context = super().get_context_data(**kwargs)
+
+        # for movie of the day. resets/changes ever 24 hours
+        # reference: https://www.w3schools.com/python/ref_random_seed.asp
+        # reference: https://docs.python.org/3/library/datetime.html
+        all_movies = list(Movie.objects.all())
+        if all_movies:
+            today = date.today()
+            random.seed(today.isoformat())
+            context['movie_of_the_day'] = random.choice(all_movies)
+
+        if self.request.user.is_authenticated:
+            context['profile'] = Profile.objects.get(user=self.request.user)
+
+        return context
