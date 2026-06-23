@@ -11,13 +11,14 @@
         <link rel="stylesheet" href="{% static 'styles-project.css' %}">
     </head>
     <body>
-        <h1>Login to Back to the Screen</h1>
+        <h1 style="color: #00ffff">Login to Back to the Screen</h1>
         <form action="{% url 'project_login' %}" method="POST">
             {% csrf_token %}
             {{form}}
-            <input type="submit" value="Login">
-            <a href="{% url 'show_all_movies' %}"><button type="button">Cancel</button></a>
-
+            <div style="margin-top:16px;">
+                <button type="submit">Login</button>
+                <a href="{% url 'show_all_movies' %}"><button type="button">Cancel</button></a>
+            </div>
             <hr>
             <p>Don't have a Back to the Screen account? <a href="{% url 'create_profile' %}">Create one here!</a></p>
             <!-- This basic login form works, but after login in

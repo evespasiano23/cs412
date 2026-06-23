@@ -15,11 +15,11 @@
 <!-- form to submit the delete request -->
 <form method="POST">
     {% csrf_token %}
-    <input type="submit" value="Delete">
+    <button type="submit" name="submit">Delete</button>
 </form>
 <!-- form to cancel the delete request -->
 <form action="{% url 'show_movie' movie.pk %}" method="GET">
     {% csrf_token %}
-    <input type="submit" value="Cancel">
+    <button type="submit" name="submit">Cancel</button>
 </form>
 {% endblock %}

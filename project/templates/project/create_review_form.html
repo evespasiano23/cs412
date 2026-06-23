@@ -16,9 +16,9 @@
         {{form.as_table}}
     </table>
 
-    <input type="submit" name="submit" value="Submit">
+    <button type="submit" name="submit">Submit</button>
     <!-- cancel button to allow user to return to the movie page without creating a new review -->
-    <a href="{% url 'show_movie' pk=movie.pk %}">Cancel</a>
+    <a href="{% url 'show_movie' pk=movie.pk %}"><button type="button">Cancel</button></a>
 </form>
 
 {% endblock %}

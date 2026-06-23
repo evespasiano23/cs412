@@ -17,10 +17,10 @@
     {{form.as_table}}
     </table>
 
-    <input type="submit" name="submit" value="Update">
+    <button type="submit" name="submit">Update</button>
 </form>
 <!-- Add a separate form for a cancel button -->
 <form action="{% url 'show_profile' profile.pk %}" method="GET">
-    <input type="submit" value="Cancel">
+    <button type="submit">Cancel</button>
 </form>
 {% endblock %}

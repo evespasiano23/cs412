@@ -9,6 +9,8 @@
 {% block content %}
 <h1>🎬 Movie of the Day</h1>
 <p style="text-align:center; font-size:12px; letter-spacing:4px;">A NEW PICK EVERY 24 HOURS</p>
+<!-- reference: https://www.w3schools.com/tags/tag_span.asp -->
+<p style="text-align:center; color:#00ffff; font-size:12px; margin-top:4px;">Next pick in: <span id="countdown"></span></p>
 
 {% if movie_of_the_day %}
     <div style="text-align:center; margin:30px 0;">
@@ -16,12 +18,31 @@
             <img src="{{movie_of_the_day.movie_image_url}}" alt="{{movie_of_the_day.title}}" style="width:300px; height:450px; object-fit:cover; border:3px solid #ff00ff; border-radius:8px;">
         </a>
         <h2 style="margin-top:16px;">{{movie_of_the_day.title}}</h2>
-        <p style="color:#888;">{{movie_of_the_day.year}} · {{movie_of_the_day.genre}}</p>
-        <p style="color:#888;">Directed by {{movie_of_the_day.director}}</p>
-        <p>⭐ <strong>Average Rating:</strong> {{movie_of_the_day.get_average_rating}}</p>
+        <p style="color:#888;">{{movie_of_the_day.year}} · {{movie_of_the_day.genre}} · Directed by {{movie_of_the_day.director}}</p>
+        <p style="max-width:500px; margin:16px auto; color:#fff; opacity:0.9; line-height:1.6;">{{movie_of_the_day.movie_description}}</p>
     </div>
 {% else %}
     <p>No movies available yet.</p>
 {% endif %}
 
+<script>
+    // calculates the time remaining until midnight, when the next Movie of the Day will be picked
+    // reference: https://www.w3schools.com/jsref/jsref_obj_date.asp
+    function updateCountdown() {
+        const now = new Date();
+        const midnight = new Date(now);
+        midnight.setHours(24, 0, 0, 0);
+
+        const diff = midnight - now;
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('countdown').textContent = hours + "h " + minutes + "m " + seconds + "s";
+    }
+
+    // updates the countdown every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+</script>
 {% endblock %}
