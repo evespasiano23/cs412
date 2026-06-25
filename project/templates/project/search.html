@@ -7,12 +7,14 @@
 
 {% block content %}
 <h1>Search</h1>
+<!-- displays logged in user's user-->
 <p>@{{profile.username}}</p>
 
 <!-- display the HTML search form -->
 <form action="{% url 'search' %}" method="GET">
     <table>
         <tr>
+            <!-- label and text input where user types their search query -->
             <td><label>Search for a movie title, director, genre, or username:</label></td>
             <td><input type="text" name="query"></td>
         </tr>

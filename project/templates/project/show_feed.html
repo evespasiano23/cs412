@@ -9,6 +9,7 @@
 {% block content %}
 <h1>{{profile.display_name}}'s Feed</h1>
 
+<!-- loops through each review in the feed, based on who the profile is following -->
 {% for review in profile.get_review_feed %}
     <div style="border:1px solid #ff00ff; border-radius:8px; padding:20px; margin-bottom:20px;">
             <!-- displays the profile image and the name of the review author -->
@@ -16,12 +17,14 @@
             <img src="{{review.profile.profile_image_url}}" alt="" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
             <div>
                 <a href="{% url 'show_profile' review.profile.pk %}" class="username-link"><strong>@{{review.profile}}</strong></a>
+                <!-- shows when the review was last added or updated -->
                 <p style="font-size:12px; margin:0; opacity:0.7;">{{review.date_added}}</p>
             </div>
         </div>
 
         <!-- displays movie being reviewed  -->
         <a href="{% url 'show_movie' review.movie.pk %}"><strong style="display:block; margin-top:12px; margin-bottom:8px;">{{review.movie.title}}</strong></a>
+         <!-- displays movie's rating + text -->
         <p style="font-size:0.9em; margin:0 0 6px 0;">⭐ {{review.rating}}/5</p>
         <p style="font-size:0.9em; margin:0;">{{review.review_text}}</p>
 

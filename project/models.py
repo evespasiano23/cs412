@@ -42,7 +42,7 @@ class Movie(models.Model):
     
     def get_all_reviews(self):
         '''Return all of the reviews associated with this specific movie.'''
-        reviews = Review.objects.filter(movie=self).order_by('date_added')
+        reviews = Review.objects.filter(movie=self).order_by('-date_added')
         return reviews
 
     def get_average_rating(self):
@@ -138,7 +138,7 @@ class Profile(models.Model):
 
     def get_watchlist(self):
         '''Return all movies on this Profile's watchlist.'''
-        watchlists = Watchlist.objects.filter(profile=self)
+        watchlists = Watchlist.objects.filter(profile=self).order_by('-date_added')
         movies = []
         for watchlist in watchlists:
             movies.append(watchlist.movie)

@@ -10,7 +10,6 @@
 
 {% block content %}
 <h1>Showing Profile</h1>
-<a href="{% url 'show_all_movies' %}" style="text-decoration:none; color:#00ffff; font-weight:bold;">← Back to All Movies</a>
 
 <div style="display:flex; align-items:flex-start; gap:40px; padding:20px;">
         <!-- displays circular profile picture to match Instagram formatting. -->
@@ -66,6 +65,7 @@
         {% for review in profile.get_all_reviews %}
             <div style="border:1px solid #00ffff; border-radius:8px; padding:16px; margin-bottom:10px;">
                 <a href="{% url 'show_movie' review.movie.pk %}"><strong>{{review.movie.title}}</strong></a>
+                <p style="font-size:12px; margin:0; opacity:0.7;">{{review.date_added}}</p>
                 <p>⭐ {{review.rating}}/5</p>
                 <p>{{review.review_text}}</p>
 

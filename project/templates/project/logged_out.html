@@ -8,13 +8,18 @@
 <html>
     <head>
         <title>Back to the Screen</title>
+        <!-- Linking the CSS stylesheet -->
         <link rel="stylesheet" href="{% static 'styles-project.css' %}">
     </head>
     <body>
         <h1>Back to the Screen</h1>
+        <!-- confirmation to let the user know they've been logged out -->
         <h2 style="color: #00ffff">Great Scott! You've been logged out.</h2>
-        <a href="{% url 'project_login' %}">Login again</a>
-        <a href="{% url 'show_all_movies' %}">Browse Movies🎬</a>
+        <!-- buttons allowing user to either login or browse movies -->
+        <div style="display:flex; justify-content:center; gap:16px; margin-top:20px;">
+            <a href="{% url 'project_login' %}"><button>Login Again</button></a>
+            <a href="{% url 'show_all_movies' %}"><button>Browse Movies🎬</button></a>
+        </div>
 </body>
 
 </html>

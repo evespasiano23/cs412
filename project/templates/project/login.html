@@ -8,18 +8,22 @@
 <html>
     <head>
         <title>Back to the Screen</title>
+        <!-- Linking the CSS stylesheet -->
         <link rel="stylesheet" href="{% static 'styles-project.css' %}">
     </head>
     <body>
         <h1 style="color: #00ffff">Login to Back to the Screen</h1>
+        <!-- login form that takes in the user's login credentials and submits them via POST -->
         <form action="{% url 'project_login' %}" method="POST">
             {% csrf_token %}
             {{form}}
+            <!-- login and cancel buttons -->
             <div style="margin-top:16px;">
                 <button type="submit">Login</button>
                 <a href="{% url 'show_all_movies' %}"><button type="button">Cancel</button></a>
             </div>
             <hr>
+            <!-- link for new users to create an account -->
             <p>Don't have a Back to the Screen account? <a href="{% url 'create_profile' %}">Create one here!</a></p>
             <!-- This basic login form works, but after login in
             assumed the existance of a page at /registration/profile, which

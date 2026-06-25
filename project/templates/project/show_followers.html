@@ -6,7 +6,7 @@
 {% extends 'project/base.html' %}
 
 {% block content %}
-<a href="{% url 'show_profile' profile.pk %}" style="text-align:center; text-decoration:none; color:#ff00ff;">⬅️<br><small>Back to Profile</small></a>
+<a href="{% url 'show_profile' profile.pk %}" style="text-decoration:none; color:#00ffff; font-weight:bold;">← Back to {{profile.display_name}}'s Profile</a>
 <h1>{{profile.display_name}}'s Followers</h1>
 
         <!-- loops through each profile that follows a specific profile -->
